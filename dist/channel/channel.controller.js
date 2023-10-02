@@ -24,7 +24,10 @@ let ChannelController = class ChannelController {
         return await this.ChannelService.findAllChannels();
     }
     async findChannels(filters) {
-        return await this.ChannelService.findChannels(filters);
+        return await this.ChannelService.findChannels(filters, 25);
+    }
+    async findAllChannelsWithFilter(filters) {
+        return await this.ChannelService.findChannels(filters, 100000);
     }
     async findChannel(params) {
         return await this.ChannelService.findChannelById(params.id);
@@ -50,6 +53,13 @@ __decorate([
     __metadata("design:paramtypes", [findChannels_dto_1.findChannelsDTO]),
     __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "findChannels", null);
+__decorate([
+    (0, common_1.Post)('/findall'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [findChannels_dto_1.findChannelsDTO]),
+    __metadata("design:returntype", Promise)
+], ChannelController.prototype, "findAllChannelsWithFilter", null);
 __decorate([
     (0, common_1.Get)('/find/:id'),
     __param(0, (0, common_1.Param)()),

@@ -38,7 +38,7 @@ let ChannelService = class ChannelService {
             throw new common_1.HttpException(e.message, common_1.HttpStatus.BAD_REQUEST);
         }
     }
-    async findChannels(filters) {
+    async findChannels(filters, limit) {
         try {
             const channels = await this.ChannelModel.find({
                 $and: [
@@ -63,7 +63,7 @@ let ChannelService = class ChannelService {
                     { channel_acc_stop: { $regex: filters.channelAccStopFilter, $options: 'i' } },
                     { channel_ip_mng_acc: { $regex: filters.channelIpMngFilter, $options: 'i' } }
                 ]
-            }, null, { sort: { '_id': -1 } }).limit(25);
+            }, null, { sort: { '_id': -1 } }).limit(limit);
             return channels;
         }
         catch (e) {

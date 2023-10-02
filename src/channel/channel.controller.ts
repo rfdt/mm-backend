@@ -14,7 +14,12 @@ export class ChannelController {
 
   @Post('/find')
   async findChannels(@Body() filters: findChannelsDTO){
-    return await this.ChannelService.findChannels(filters);
+    return await this.ChannelService.findChannels(filters, 25);
+  }
+
+  @Post('/findall')
+  async findAllChannelsWithFilter(@Body() filters: findChannelsDTO){
+    return await this.ChannelService.findChannels(filters, 100000);
   }
 
   @Get('/find/:id')

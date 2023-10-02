@@ -28,7 +28,7 @@ export class ChannelService {
     }
   }
 
-  async findChannels(filters: findChannelsDTO){
+  async findChannels(filters: findChannelsDTO, limit: number){
     try {
       const channels = await this.ChannelModel.find({
         $and: [
@@ -53,7 +53,7 @@ export class ChannelService {
           {channel_acc_stop: {$regex: filters.channelAccStopFilter, $options: 'i'}},
           {channel_ip_mng_acc: {$regex: filters.channelIpMngFilter, $options: 'i'}}
         ]
-      }, null, {sort: {'_id': -1}}).limit(25)
+      }, null, {sort: {'_id': -1}}).limit(limit)
       return channels;
     }catch (e){
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
