@@ -50,4 +50,5 @@ export declare class ChannelController {
         pe: any[];
     }>;
     getChannelsCount(): Promise<number>;
+    testError(): Promise<void>;
 }

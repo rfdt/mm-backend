@@ -103,6 +103,10 @@ export class ChannelService {
     }
   }
 
+  async testError(){
+    throw new HttpException('Тестовая ошибка', HttpStatus.BAD_REQUEST)
+  }
+
   // async insertTestValues(){
   //   try {
   //     this.channels.forEach(async (channel, idx)=>{

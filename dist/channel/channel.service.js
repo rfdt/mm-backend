@@ -111,6 +111,9 @@ let ChannelService = class ChannelService {
             throw new common_1.HttpException(e.message, common_1.HttpStatus.BAD_REQUEST);
         }
     }
+    async testError() {
+        throw new common_1.HttpException('Тестовая ошибка', common_1.HttpStatus.BAD_REQUEST);
+    }
 };
 exports.ChannelService = ChannelService;
 exports.ChannelService = ChannelService = __decorate([

@@ -37,6 +37,11 @@ export class ChannelController {
     return await this.ChannelService.getChannelsCount();
   }
 
+  @Get('/test')
+  async testError(){
+    return await this.ChannelService.testError();
+  }
+
   // @Get('/insert')
   //  async insertTestValues(){
   //   return  await this.ChannelService.insertTestValues();

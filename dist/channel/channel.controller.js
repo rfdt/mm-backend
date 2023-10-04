@@ -38,6 +38,9 @@ let ChannelController = class ChannelController {
     async getChannelsCount() {
         return await this.ChannelService.getChannelsCount();
     }
+    async testError() {
+        return await this.ChannelService.testError();
+    }
 };
 exports.ChannelController = ChannelController;
 __decorate([
@@ -79,6 +82,12 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "getChannelsCount", null);
+__decorate([
+    (0, common_1.Get)('/test'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], ChannelController.prototype, "testError", null);
 exports.ChannelController = ChannelController = __decorate([
     (0, common_1.Controller)('channels'),
     __metadata("design:paramtypes", [channel_service_1.ChannelService])

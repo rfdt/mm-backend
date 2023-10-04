@@ -47,4 +47,5 @@ export declare class ChannelService {
         pe: any[];
     }>;
     getChannelsCount(): Promise<number>;
+    testError(): Promise<void>;
 }
