@@ -40,7 +40,7 @@ let ChannelService = class ChannelService {
     }
     async findChannels(filters, limit) {
         try {
-            const channels = await this.ChannelModel.find({
+            const query = {
                 $and: [
                     { city: { $regex: filters.cityFilter, $options: 'i' } },
                     { street: { $regex: filters.streetFilter, $options: 'i' } },
@@ -63,8 +63,12 @@ let ChannelService = class ChannelService {
                     { channel_acc_stop: { $regex: filters.channelAccStopFilter, $options: 'i' } },
                     { channel_ip_mng_acc: { $regex: filters.channelIpMngFilter, $options: 'i' } }
                 ]
-            }, null, { sort: { '_id': -1 } }).limit(limit);
-            return channels;
+            };
+            const data = await Promise.all([
+                this.ChannelModel.find(query, null, { sort: { '_id': -1 } }).count(),
+                await this.ChannelModel.find(query, null, { sort: { '_id': -1 } }).limit(limit)
+            ]);
+            return ({ channels: data[1], count: data[0] });
         }
         catch (e) {
             throw new common_1.HttpException(e.message, common_1.HttpStatus.BAD_REQUEST);

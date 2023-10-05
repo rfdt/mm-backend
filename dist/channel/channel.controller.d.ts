@@ -31,12 +31,18 @@ export declare class ChannelController {
     findAllChannels(): Promise<(import("mongoose").Document<unknown, {}, import("./channel.schema").ChannelDocument> & import("./channel.schema").Channel & import("mongoose").Document<any, any, any> & {
         _id: import("mongoose").Types.ObjectId;
     })[]>;
-    findChannels(filters: findChannelsDTO): Promise<(import("mongoose").Document<unknown, {}, import("./channel.schema").ChannelDocument> & import("./channel.schema").Channel & import("mongoose").Document<any, any, any> & {
-        _id: import("mongoose").Types.ObjectId;
-    })[]>;
-    findAllChannelsWithFilter(filters: findChannelsDTO): Promise<(import("mongoose").Document<unknown, {}, import("./channel.schema").ChannelDocument> & import("./channel.schema").Channel & import("mongoose").Document<any, any, any> & {
-        _id: import("mongoose").Types.ObjectId;
-    })[]>;
+    findChannels(filters: findChannelsDTO): Promise<{
+        channels: (import("mongoose").Document<unknown, {}, import("./channel.schema").ChannelDocument> & import("./channel.schema").Channel & import("mongoose").Document<any, any, any> & {
+            _id: import("mongoose").Types.ObjectId;
+        })[];
+        count: number;
+    }>;
+    findAllChannelsWithFilter(filters: findChannelsDTO): Promise<{
+        channels: (import("mongoose").Document<unknown, {}, import("./channel.schema").ChannelDocument> & import("./channel.schema").Channel & import("mongoose").Document<any, any, any> & {
+            _id: import("mongoose").Types.ObjectId;
+        })[];
+        count: number;
+    }>;
     findChannel(params: any): Promise<import("mongoose").Document<unknown, {}, import("./channel.schema").ChannelDocument> & import("./channel.schema").Channel & import("mongoose").Document<any, any, any> & {
         _id: import("mongoose").Types.ObjectId;
     }>;

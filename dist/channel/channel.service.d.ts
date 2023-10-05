@@ -34,9 +34,12 @@ export declare class ChannelService {
     findChannelById(channel_id: string): Promise<import("mongoose").Document<unknown, {}, ChannelDocument> & Channel & import("mongoose").Document<any, any, any> & {
         _id: import("mongoose").Types.ObjectId;
     }>;
-    findChannels(filters: findChannelsDTO, limit: number): Promise<(import("mongoose").Document<unknown, {}, ChannelDocument> & Channel & import("mongoose").Document<any, any, any> & {
-        _id: import("mongoose").Types.ObjectId;
-    })[]>;
+    findChannels(filters: findChannelsDTO, limit: number): Promise<{
+        channels: (import("mongoose").Document<unknown, {}, ChannelDocument> & Channel & import("mongoose").Document<any, any, any> & {
+            _id: import("mongoose").Types.ObjectId;
+        })[];
+        count: number;
+    }>;
     gitFiltersValue(): Promise<{
         city: any[];
         streets: {};
