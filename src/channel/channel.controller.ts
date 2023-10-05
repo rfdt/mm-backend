@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Query, UseGuards } from "@nestjs/common";
 import { ChannelService } from "./channel.service";
 import { findChannelsDTO } from "./dto/findChannels.dto";
+import { AuthGuard } from "../auth/auth.guard";
 @Controller('channels')
 export class ChannelController {
 
@@ -27,6 +28,7 @@ export class ChannelController {
     return await this.ChannelService.findChannelById(params.id);
   }
 
+  // @UseGuards(AuthGuard)
   @Get('/getfiltersvalue')
   async gitFiltersValue(){
     return await this.ChannelService.gitFiltersValue();
