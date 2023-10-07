@@ -2,9 +2,9 @@ import { IsString } from "class-validator";
 
 export class loginUserDTO{
 
-  @IsString({ message: "Please enter valid filter string" })
+  @IsString({ message: "Пожалуйста введите корректный логин" })
   login: string;
 
-  @IsString({ message: "Please enter valid filter password" })
+  @IsString({ message: "Пожалуйста введите корректный пароль" })
   password: string
 }

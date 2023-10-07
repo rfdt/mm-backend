@@ -22,7 +22,6 @@ export class AuthController {
     return await this.AuthService.loginUser(loginUserDTO);
   }
 
-  @Roles("TSUCC", "GFSS")
   @UseGuards(AuthGuard)
   @Get('/me')
   async getAuthUser(@UserID() userId: string){

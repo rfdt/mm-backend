@@ -63,11 +63,14 @@ export class AuthService {
   private async validateUser(loginUserDTO: loginUserDTO) {
     try {
       const user = await this.userService.getUserByLogin(loginUserDTO.login)
+      if(!user){
+        throw new Error('Пользователь не найден')
+      }
       const passwordEquals = await bcrypt.compare(loginUserDTO.password, user.password_hash);
       if (user && passwordEquals) {
         return user;
       }
-      throw new Error('Некорректный логин или пароль')
+      throw new Error('Некорректный пароль')
     }catch (e){
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
     }

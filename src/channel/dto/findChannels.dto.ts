@@ -2,30 +2,30 @@ import { IsString } from "class-validator";
 
 export class findChannelsDTO {
 
-  @IsString({ message: "Please enter valid filter addInfoFilter"})
+  @IsString({ message: "Пожалуйста ввведите корректный фильтр - addInfoFilter"})
   addInfoFilter: string;
-  @IsString({ message: "Please enter valid filter cityFilter"})
+  @IsString({ message: "Пожалуйста ввведите корректный фильтр - cityFilter"})
   cityFilter: string;
-  @IsString({ message: "Please enter valid filter streetFilter"})
+  @IsString({ message: "Пожалуйста ввведите корректный фильтр - streetFilter"})
   streetFilter: string;
-  @IsString({ message: "Please enter valid filter homeFilter"})
+  @IsString({ message: "Пожалуйста ввведите корректный фильтр - homeFilter"})
   homeFilter: string;
-  @IsString({ message: "Please enter valid filter serviceFilter"})
+  @IsString({ message: "Пожалуйста ввведите корректный фильтр - serviceFilter"})
   serviceFilter: string;
-  @IsString({ message: "Please enter valid filter statusFilter"})
+  @IsString({ message: "Пожалуйста ввведите корректный фильтр - statusFilter"})
   statusFilter: string;
-  @IsString({ message: "Please enter valid filter peFilter"})
+  @IsString({ message: "Пожалуйста ввведите корректный фильтр - peFilter"})
   peFilter: string;
-  @IsString({ message: "Please enter valid filter rdFilter"})
+  @IsString({ message: "Пожалуйста ввведите корректный фильтр - rdFilter"})
   rdFilter: string;
-  @IsString({ message: "Please enter valid filter channelAggStopFilter"})
+  @IsString({ message: "Пожалуйста ввведите корректный фильтр - channelAggStopFilter"})
   channelAggStopFilter: string;
-  @IsString({ message: "Please enter valid filter vidFilter"})
+  @IsString({ message: "Пожалуйста ввведите корректный фильтр - vidFilter"})
   vidFilter: string;
-  @IsString({ message: "Please enter valid filter sizeFilter"})
+  @IsString({ message: "Пожалуйста ввведите корректный фильтр - sizeFilter"})
   sizeFilter: string;
-  @IsString({ message: "Please enter valid filter channelAccStopFilter"})
+  @IsString({ message: "Пожалуйста ввведите корректный фильтр - channelAccStopFilter"})
   channelAccStopFilter: string;
-  @IsString({ message: "Please enter valid filter channelIpMngFilter"})
+  @IsString({ message: "Пожалуйста ввведите корректный фильтр - channelIpMngFilter"})
   channelIpMngFilter: string;
 }
