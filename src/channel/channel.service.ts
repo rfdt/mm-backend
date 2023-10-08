@@ -51,7 +51,8 @@ export class ChannelService {
           {channel_vid:  {$regex: filters.vidFilter, $options: 'i'}},
           {service_size: {$regex: filters.sizeFilter, $options: 'i'}},
           {channel_acc_stop: {$regex: filters.channelAccStopFilter, $options: 'i'}},
-          {channel_ip_mng_acc: {$regex: filters.channelIpMngFilter, $options: 'i'}}
+          {channel_ip_mng_acc: {$regex: filters.channelIpMngFilter, $options: 'i'}},
+          {channel_region: filters.channelRegionFilter}
         ]
       }
       const data = await Promise.all([

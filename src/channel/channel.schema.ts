@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 export type ChannelDocument = Channel & Document;
 @Schema()
 export class Channel {
@@ -93,6 +93,9 @@ export class Channel {
 
   @Prop({required: true, default: "crimea"})
   channel_region: string;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Channel' })
+  channel_ref: Channel;
 }
 
 export const ChannelSchema = SchemaFactory.createForClass(Channel);

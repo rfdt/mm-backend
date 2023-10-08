@@ -28,4 +28,6 @@ export class findChannelsDTO {
   channelAccStopFilter: string;
   @IsString({ message: "Пожалуйста ввведите корректный фильтр - channelIpMngFilter"})
   channelIpMngFilter: string;
+  @IsString({ message: "Пожалуйста ввведите корректный фильтр - channelRegionFilter"})
+  channelRegionFilter: string;
 }
