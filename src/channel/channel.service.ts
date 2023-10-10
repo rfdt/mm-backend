@@ -3,6 +3,7 @@ import { Error, Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { Channel, ChannelDocument } from "./channel.schema";
 import { findChannelsDTO } from "./dto/findChannels.dto";
+import {UpdatedChannelWithCreateDto} from "./dto/updatedChannelWithCreate.dto";
 
 
 @Injectable()
@@ -36,7 +37,7 @@ export class ChannelService {
           {street: {$regex: filters.streetFilter, $options: 'i'}},
           {home: {$regex: filters.homeFilter, $options: 'i'}},
           {service: {$regex: filters.serviceFilter, $options: 'i'}},
-          {status: {$regex: filters.statusFilter, $options: 'i'}},
+          {status: filters.statusFilter ? {$regex: filters.statusFilter, $options: 'i'} : {$in:["ВКЛ", "ПАУЗА", "РЕЗЕРВ", "ОТКЛ"]}},
           {$or: [
               {id_tbcd: {$regex: filters.addInfoFilter, $options: 'i'}},
               {id_suz: {$regex: filters.addInfoFilter, $options: 'i'}},
@@ -110,6 +111,34 @@ export class ChannelService {
 
   async testError(){
     throw new HttpException('Тестовая ошибка', HttpStatus.BAD_REQUEST)
+  }
+
+  async updateAndCreate(updatedChannelWithCreateDto: UpdatedChannelWithCreateDto){
+    try {
+      const changedStatusField = await this.ChannelModel.findByIdAndUpdate(updatedChannelWithCreateDto._id,
+          {status: "ИЗМ"}, {new: true})
+      const newChannel = new this.ChannelModel({
+        ...updatedChannelWithCreateDto,
+        channel_ref: updatedChannelWithCreateDto.channel_ref ? updatedChannelWithCreateDto.channel_ref : updatedChannelWithCreateDto._id,
+        _id: null
+      })
+      const newUpdatedChannel = await newChannel.save();
+      return newUpdatedChannel;
+    }catch (e){
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  async updateChannel(updateChannelDto: UpdatedChannelWithCreateDto){
+    try {
+      const newChannel = {...updateChannelDto}
+      delete newChannel._id
+      const changedChannel = await this.ChannelModel.findByIdAndUpdate(updateChannelDto._id,
+          {...newChannel}, {new: true})
+      return changedChannel;
+    }catch (e){
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
+    }
   }
 
   // async insertTestValues(){

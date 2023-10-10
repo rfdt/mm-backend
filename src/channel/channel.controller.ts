@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post, Query, UseGuards } from "@nestjs/co
 import { ChannelService } from "./channel.service";
 import { findChannelsDTO } from "./dto/findChannels.dto";
 import { AuthGuard } from "../auth/auth.guard";
+import {UpdatedChannelWithCreateDto} from "./dto/updatedChannelWithCreate.dto";
 @Controller('channels')
 export class ChannelController {
 
@@ -42,6 +43,16 @@ export class ChannelController {
   @Get('/test')
   async testError(){
     return await this.ChannelService.testError();
+  }
+
+  @Post('/updateandcreate')
+  async updateAndCreate(@Body() updatedChannelWithCreateDto: UpdatedChannelWithCreateDto){
+    return await this.ChannelService.updateAndCreate(updatedChannelWithCreateDto);
+  }
+
+  @Post('/update')
+  async updateChannel(@Body() updatedChannelDto: UpdatedChannelWithCreateDto){
+    return await this.ChannelService.updateChannel(updatedChannelDto);
   }
 
   // @Get('/insert')

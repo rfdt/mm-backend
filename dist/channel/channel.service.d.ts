@@ -25,6 +25,7 @@
 import { Model } from "mongoose";
 import { Channel, ChannelDocument } from "./channel.schema";
 import { findChannelsDTO } from "./dto/findChannels.dto";
+import { UpdatedChannelWithCreateDto } from "./dto/updatedChannelWithCreate.dto";
 export declare class ChannelService {
     private ChannelModel;
     constructor(ChannelModel: Model<ChannelDocument>);
@@ -51,4 +52,10 @@ export declare class ChannelService {
     }>;
     getChannelsCount(): Promise<number>;
     testError(): Promise<void>;
+    updateAndCreate(updatedChannelWithCreateDto: UpdatedChannelWithCreateDto): Promise<import("mongoose").Document<unknown, {}, ChannelDocument> & Channel & import("mongoose").Document<any, any, any> & {
+        _id: import("mongoose").Types.ObjectId;
+    }>;
+    updateChannel(updateChannelDto: UpdatedChannelWithCreateDto): Promise<import("mongoose").Document<unknown, {}, ChannelDocument> & Channel & import("mongoose").Document<any, any, any> & {
+        _id: import("mongoose").Types.ObjectId;
+    }>;
 }

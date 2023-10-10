@@ -46,7 +46,7 @@ let ChannelService = class ChannelService {
                     { street: { $regex: filters.streetFilter, $options: 'i' } },
                     { home: { $regex: filters.homeFilter, $options: 'i' } },
                     { service: { $regex: filters.serviceFilter, $options: 'i' } },
-                    { status: { $regex: filters.statusFilter, $options: 'i' } },
+                    { status: filters.statusFilter ? { $regex: filters.statusFilter, $options: 'i' } : { $in: ["ВКЛ", "ПАУЗА", "РЕЗЕРВ", "ОТКЛ"] } },
                     { $or: [
                             { id_tbcd: { $regex: filters.addInfoFilter, $options: 'i' } },
                             { id_suz: { $regex: filters.addInfoFilter, $options: 'i' } },
@@ -118,6 +118,32 @@ let ChannelService = class ChannelService {
     }
     async testError() {
         throw new common_1.HttpException('Тестовая ошибка', common_1.HttpStatus.BAD_REQUEST);
+    }
+    async updateAndCreate(updatedChannelWithCreateDto) {
+        try {
+            const changedStatusField = await this.ChannelModel.findByIdAndUpdate(updatedChannelWithCreateDto._id, { status: "ИЗМ" }, { new: true });
+            const newChannel = new this.ChannelModel({
+                ...updatedChannelWithCreateDto,
+                channel_ref: updatedChannelWithCreateDto.channel_ref ? updatedChannelWithCreateDto.channel_ref : updatedChannelWithCreateDto._id,
+                _id: null
+            });
+            const newUpdatedChannel = await newChannel.save();
+            return newUpdatedChannel;
+        }
+        catch (e) {
+            throw new common_1.HttpException(e.message, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
+    async updateChannel(updateChannelDto) {
+        try {
+            const newChannel = { ...updateChannelDto };
+            delete newChannel._id;
+            const changedChannel = await this.ChannelModel.findByIdAndUpdate(updateChannelDto._id, { ...newChannel }, { new: true });
+            return changedChannel;
+        }
+        catch (e) {
+            throw new common_1.HttpException(e.message, common_1.HttpStatus.BAD_REQUEST);
+        }
     }
 };
 exports.ChannelService = ChannelService;

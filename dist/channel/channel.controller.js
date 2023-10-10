@@ -16,6 +16,7 @@ exports.ChannelController = void 0;
 const common_1 = require("@nestjs/common");
 const channel_service_1 = require("./channel.service");
 const findChannels_dto_1 = require("./dto/findChannels.dto");
+const updatedChannelWithCreate_dto_1 = require("./dto/updatedChannelWithCreate.dto");
 let ChannelController = class ChannelController {
     constructor(ChannelService) {
         this.ChannelService = ChannelService;
@@ -40,6 +41,12 @@ let ChannelController = class ChannelController {
     }
     async testError() {
         return await this.ChannelService.testError();
+    }
+    async updateAndCreate(updatedChannelWithCreateDto) {
+        return await this.ChannelService.updateAndCreate(updatedChannelWithCreateDto);
+    }
+    async updateChannel(updatedChannelDto) {
+        return await this.ChannelService.updateChannel(updatedChannelDto);
     }
 };
 exports.ChannelController = ChannelController;
@@ -88,6 +95,20 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "testError", null);
+__decorate([
+    (0, common_1.Post)('/updateandcreate'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [updatedChannelWithCreate_dto_1.UpdatedChannelWithCreateDto]),
+    __metadata("design:returntype", Promise)
+], ChannelController.prototype, "updateAndCreate", null);
+__decorate([
+    (0, common_1.Post)('/update'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [updatedChannelWithCreate_dto_1.UpdatedChannelWithCreateDto]),
+    __metadata("design:returntype", Promise)
+], ChannelController.prototype, "updateChannel", null);
 exports.ChannelController = ChannelController = __decorate([
     (0, common_1.Controller)('channels'),
     __metadata("design:paramtypes", [channel_service_1.ChannelService])
