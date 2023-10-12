@@ -68,8 +68,8 @@ __decorate([
     __metadata("design:type", String)
 ], Channel.prototype, "status", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: true, default: "" }),
-    __metadata("design:type", String)
+    (0, mongoose_1.Prop)({ required: true, default: Date.now }),
+    __metadata("design:type", Date)
 ], Channel.prototype, "date", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ required: true, default: "" }),

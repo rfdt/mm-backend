@@ -14,7 +14,7 @@ export declare class Channel {
     add_info: string;
     contact: string;
     status: string;
-    date: string;
+    date: Date;
     note: string;
     rd_sr: string;
     channel_pe: string;
