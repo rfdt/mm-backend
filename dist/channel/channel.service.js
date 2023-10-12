@@ -51,6 +51,7 @@ let ChannelService = class ChannelService {
                             { id_tbcd: { $regex: filters.addInfoFilter, $options: 'i' } },
                             { id_suz: { $regex: filters.addInfoFilter, $options: 'i' } },
                             { id_cms: { $regex: filters.addInfoFilter, $options: 'i' } },
+                            { id_oss: { $regex: filters.addInfoFilter, $options: 'i' } },
                             { client: { $regex: filters.addInfoFilter, $options: 'i' } },
                             { add_info: { $regex: filters.addInfoFilter, $options: 'i' } },
                             { note: { $regex: filters.addInfoFilter, $options: 'i' } },
@@ -140,6 +141,15 @@ let ChannelService = class ChannelService {
             delete newChannel._id;
             const changedChannel = await this.ChannelModel.findByIdAndUpdate(updateChannelDto._id, { ...newChannel }, { new: true });
             return changedChannel;
+        }
+        catch (e) {
+            throw new common_1.HttpException(e.message, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
+    async createChannel(newChannel) {
+        try {
+            const newChannelDocument = new this.ChannelModel({ ...newChannel });
+            return await newChannelDocument.save();
         }
         catch (e) {
             throw new common_1.HttpException(e.message, common_1.HttpStatus.BAD_REQUEST);

@@ -4,6 +4,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Channel, ChannelDocument } from "./channel.schema";
 import { findChannelsDTO } from "./dto/findChannels.dto";
 import {UpdatedChannelWithCreateDto} from "./dto/updatedChannelWithCreate.dto";
+import {newChannelDto} from "./dto/newChannel.dto";
 
 
 @Injectable()
@@ -42,6 +43,7 @@ export class ChannelService {
               {id_tbcd: {$regex: filters.addInfoFilter, $options: 'i'}},
               {id_suz: {$regex: filters.addInfoFilter, $options: 'i'}},
               {id_cms: {$regex: filters.addInfoFilter, $options: 'i'}},
+              {id_oss: {$regex: filters.addInfoFilter, $options: 'i'}},
               {client: {$regex: filters.addInfoFilter, $options: 'i'}},
               {add_info: {$regex: filters.addInfoFilter, $options: 'i'}},
               {note: {$regex: filters.addInfoFilter, $options: 'i'}},
@@ -136,6 +138,15 @@ export class ChannelService {
       const changedChannel = await this.ChannelModel.findByIdAndUpdate(updateChannelDto._id,
           {...newChannel}, {new: true})
       return changedChannel;
+    }catch (e){
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  async createChannel(newChannel: newChannelDto){
+    try {
+      const newChannelDocument = new this.ChannelModel({...newChannel})
+      return await newChannelDocument.save();
     }catch (e){
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
     }
