@@ -53,9 +53,15 @@ export declare class ChannelController {
         streets: {};
         services: any[];
         clients: any[];
-        agg: any[];
-        acc: any[];
-        pe: any[];
+        pe: (import("mongoose").Document<unknown, {}, import("./hardware.schema").HardwareDocument> & import("./hardware.schema").Hardware & import("mongoose").Document<any, any, any> & {
+            _id: import("mongoose").Types.ObjectId;
+        })[];
+        ssw: (import("mongoose").Document<unknown, {}, import("./hardware.schema").HardwareDocument> & import("./hardware.schema").Hardware & import("mongoose").Document<any, any, any> & {
+            _id: import("mongoose").Types.ObjectId;
+        })[];
+        stop: (import("mongoose").Document<unknown, {}, import("./hardware.schema").HardwareDocument> & import("./hardware.schema").Hardware & import("mongoose").Document<any, any, any> & {
+            _id: import("mongoose").Types.ObjectId;
+        })[];
     }>;
     getChannelsCount(): Promise<number>;
     testError(): Promise<void>;

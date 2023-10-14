@@ -13,6 +13,7 @@ const channel_service_1 = require("./channel.service");
 const mongoose_1 = require("@nestjs/mongoose");
 const channel_schema_1 = require("./channel.schema");
 const auth_module_1 = require("../auth/auth.module");
+const hardware_schema_1 = require("./hardware.schema");
 let ChannelModule = class ChannelModule {
 };
 exports.ChannelModule = ChannelModule;
@@ -20,6 +21,7 @@ exports.ChannelModule = ChannelModule = __decorate([
     (0, common_1.Module)({
         imports: [
             mongoose_1.MongooseModule.forFeature([{ name: channel_schema_1.Channel.name, schema: channel_schema_1.ChannelSchema }]),
+            mongoose_1.MongooseModule.forFeature([{ name: hardware_schema_1.Hardware.name, schema: hardware_schema_1.HardwareSchema }]),
             auth_module_1.AuthModule
         ],
         controllers: [channel_controller_1.ChannelController],

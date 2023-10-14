@@ -27,9 +27,11 @@ import { Channel, ChannelDocument } from "./channel.schema";
 import { findChannelsDTO } from "./dto/findChannels.dto";
 import { UpdatedChannelWithCreateDto } from "./dto/updatedChannelWithCreate.dto";
 import { newChannelDto } from "./dto/newChannel.dto";
+import { Hardware, HardwareDocument } from "./hardware.schema";
 export declare class ChannelService {
     private ChannelModel;
-    constructor(ChannelModel: Model<ChannelDocument>);
+    private HardwareModel;
+    constructor(ChannelModel: Model<ChannelDocument>, HardwareModel: Model<HardwareDocument>);
     findAllChannels(): Promise<(import("mongoose").Document<unknown, {}, ChannelDocument> & Channel & import("mongoose").Document<any, any, any> & {
         _id: import("mongoose").Types.ObjectId;
     })[]>;
@@ -47,9 +49,15 @@ export declare class ChannelService {
         streets: {};
         services: any[];
         clients: any[];
-        agg: any[];
-        acc: any[];
-        pe: any[];
+        pe: (import("mongoose").Document<unknown, {}, HardwareDocument> & Hardware & import("mongoose").Document<any, any, any> & {
+            _id: import("mongoose").Types.ObjectId;
+        })[];
+        ssw: (import("mongoose").Document<unknown, {}, HardwareDocument> & Hardware & import("mongoose").Document<any, any, any> & {
+            _id: import("mongoose").Types.ObjectId;
+        })[];
+        stop: (import("mongoose").Document<unknown, {}, HardwareDocument> & Hardware & import("mongoose").Document<any, any, any> & {
+            _id: import("mongoose").Types.ObjectId;
+        })[];
     }>;
     getChannelsCount(): Promise<number>;
     testError(): Promise<void>;
@@ -62,4 +70,11 @@ export declare class ChannelService {
     createChannel(newChannel: newChannelDto): Promise<import("mongoose").Document<unknown, {}, ChannelDocument> & Channel & import("mongoose").Document<any, any, any> & {
         _id: import("mongoose").Types.ObjectId;
     }>;
+    getHardwareValues(): Promise<[(import("mongoose").Document<unknown, {}, HardwareDocument> & Hardware & import("mongoose").Document<any, any, any> & {
+        _id: import("mongoose").Types.ObjectId;
+    })[], (import("mongoose").Document<unknown, {}, HardwareDocument> & Hardware & import("mongoose").Document<any, any, any> & {
+        _id: import("mongoose").Types.ObjectId;
+    })[], (import("mongoose").Document<unknown, {}, HardwareDocument> & Hardware & import("mongoose").Document<any, any, any> & {
+        _id: import("mongoose").Types.ObjectId;
+    })[]]>;
 }

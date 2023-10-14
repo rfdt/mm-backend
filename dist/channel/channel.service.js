@@ -17,9 +17,11 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("mongoose");
 const mongoose_2 = require("@nestjs/mongoose");
 const channel_schema_1 = require("./channel.schema");
+const hardware_schema_1 = require("./hardware.schema");
 let ChannelService = class ChannelService {
-    constructor(ChannelModel) {
+    constructor(ChannelModel, HardwareModel) {
         this.ChannelModel = ChannelModel;
+        this.HardwareModel = HardwareModel;
     }
     async findAllChannels() {
         try {
@@ -56,14 +58,6 @@ let ChannelService = class ChannelService {
                             { add_info: { $regex: filters.addInfoFilter, $options: 'i' } },
                             { note: { $regex: filters.addInfoFilter, $options: 'i' } },
                         ] },
-                    { channel_pe: { $regex: filters.peFilter, $options: 'i' } },
-                    { rd_sr: { $regex: filters.rdFilter, $options: 'i' } },
-                    { channel_agg_stop: { $regex: filters.channelAggStopFilter, $options: 'i' } },
-                    { channel_vid: { $regex: filters.vidFilter, $options: 'i' } },
-                    { service_size: { $regex: filters.sizeFilter, $options: 'i' } },
-                    { channel_acc_stop: { $regex: filters.channelAccStopFilter, $options: 'i' } },
-                    { channel_ip_mng_acc: { $regex: filters.channelIpMngFilter, $options: 'i' } },
-                    { channel_region: filters.channelRegionFilter }
                 ]
             };
             const data = await Promise.all([
@@ -83,9 +77,6 @@ let ChannelService = class ChannelService {
             const streets = {};
             const services = [];
             const clients = [];
-            const pe = [];
-            const agg = [];
-            const acc = [];
             channels.forEach(channel => {
                 city.indexOf(channel.city) === -1 ? city.push(channel.city) : null;
                 if (streets.hasOwnProperty(channel.city)) {
@@ -99,11 +90,13 @@ let ChannelService = class ChannelService {
                 }
                 services.indexOf(channel.service) === -1 ? services.push(channel.service) : null;
                 clients.indexOf(channel.client) === -1 ? clients.push(channel.client) : null;
-                pe.indexOf(channel.channel_pe) === -1 ? pe.push(channel.channel_pe) : null;
-                agg.indexOf(channel.channel_agg_stop) === -1 ? agg.push(channel.channel_agg_stop) : null;
-                acc.indexOf(channel.channel_acc_stop) === -1 ? acc.push(channel.channel_acc_stop) : null;
             });
-            return ({ city, streets, services, clients, agg, acc, pe });
+            const hardwares = await this.getHardwareValues();
+            return ({ city, streets, services, clients,
+                pe: hardwares[0],
+                ssw: hardwares[1],
+                stop: hardwares[2]
+            });
         }
         catch (e) {
             throw new common_1.HttpException(e.message, common_1.HttpStatus.BAD_REQUEST);
@@ -155,11 +148,20 @@ let ChannelService = class ChannelService {
             throw new common_1.HttpException(e.message, common_1.HttpStatus.BAD_REQUEST);
         }
     }
+    async getHardwareValues() {
+        return await Promise.all([
+            await this.HardwareModel.find({ hardware_type: 'pe' }),
+            await this.HardwareModel.find({ hardware_type: 'ssw' }),
+            await this.HardwareModel.find({ hardware_type: 'stop' }),
+        ]);
+    }
 };
 exports.ChannelService = ChannelService;
 exports.ChannelService = ChannelService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_2.InjectModel)(channel_schema_1.Channel.name)),
-    __metadata("design:paramtypes", [mongoose_1.Model])
+    __param(1, (0, mongoose_2.InjectModel)(hardware_schema_1.Hardware.name)),
+    __metadata("design:paramtypes", [mongoose_1.Model,
+        mongoose_1.Model])
 ], ChannelService);
 //# sourceMappingURL=channel.service.js.map

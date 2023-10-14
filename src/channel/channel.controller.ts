@@ -66,4 +66,9 @@ export class ChannelController {
   //   return  await this.ChannelService.insertTestValues();
   // }
 
+  // @Get('/inserthardware')
+  // async insertHardware(){
+  //   return await this.ChannelService.insertTestHarwaresValues();
+  // }
+
 }

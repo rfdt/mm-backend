@@ -80,49 +80,37 @@ __decorate([
     __metadata("design:type", String)
 ], Channel.prototype, "rd_sr", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: true, default: "" }),
+    (0, mongoose_1.Prop)({ default: "" }),
     __metadata("design:type", String)
 ], Channel.prototype, "channel_pe", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: true, default: "" }),
+    (0, mongoose_1.Prop)({ default: "" }),
     __metadata("design:type", String)
 ], Channel.prototype, "channel_pe_port", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: true, default: "" }),
+    (0, mongoose_1.Prop)({ default: "" }),
     __metadata("design:type", String)
 ], Channel.prototype, "channel_vid", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: true, default: "" }),
-    __metadata("design:type", String)
+    (0, mongoose_1.Prop)({ raw: (0, mongoose_1.raw)([{
+                agg_stop: { type: String },
+                agg_port: { type: String },
+                withStop: { type: Boolean }
+            }]) }),
+    __metadata("design:type", Array)
 ], Channel.prototype, "channel_agg_stop", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: true, default: "" }),
-    __metadata("design:type", String)
-], Channel.prototype, "channel_agg_port", void 0);
-__decorate([
-    (0, mongoose_1.Prop)({ required: true, default: "" }),
-    __metadata("design:type", String)
+    (0, mongoose_1.Prop)({ raw: (0, mongoose_1.raw)([{
+                acc_stop: { type: String },
+                acc_port: { type: String },
+                acc_ip_mng: { type: String },
+                acc_model: { type: String },
+                acc_sn: { type: String },
+                acc_mac: { type: String },
+                withStop: { type: Boolean }
+            }]) }),
+    __metadata("design:type", Array)
 ], Channel.prototype, "channel_acc_stop", void 0);
-__decorate([
-    (0, mongoose_1.Prop)({ required: true, default: "" }),
-    __metadata("design:type", String)
-], Channel.prototype, "channel_ip_mng_acc", void 0);
-__decorate([
-    (0, mongoose_1.Prop)({ required: true, default: "" }),
-    __metadata("design:type", String)
-], Channel.prototype, "channel_acc_port", void 0);
-__decorate([
-    (0, mongoose_1.Prop)({ required: true, default: "" }),
-    __metadata("design:type", String)
-], Channel.prototype, "channel_acc_model", void 0);
-__decorate([
-    (0, mongoose_1.Prop)({ required: true, default: "" }),
-    __metadata("design:type", String)
-], Channel.prototype, "channel_acc_sn", void 0);
-__decorate([
-    (0, mongoose_1.Prop)({ required: true, default: "" }),
-    __metadata("design:type", String)
-], Channel.prototype, "channel_acc_mac", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ required: true, default: "" }),
     __metadata("design:type", String)
@@ -139,6 +127,54 @@ __decorate([
     (0, mongoose_1.Prop)({ type: mongoose_2.default.Schema.Types.ObjectId, ref: 'Channel' }),
     __metadata("design:type", Channel)
 ], Channel.prototype, "channel_ref", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ required: true, default: true }),
+    __metadata("design:type", Boolean)
+], Channel.prototype, "channel_verified", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ default: null }),
+    __metadata("design:type", String)
+], Channel.prototype, "inventory_channel_pe", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ default: null }),
+    __metadata("design:type", String)
+], Channel.prototype, "inventory_channel_pe_port", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ default: null }),
+    __metadata("design:type", String)
+], Channel.prototype, "inventory_channel_vid", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ default: null }),
+    __metadata("design:type", String)
+], Channel.prototype, "inventory_channel_agg_stop", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ default: null }),
+    __metadata("design:type", String)
+], Channel.prototype, "inventory_channel_agg_port", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ default: null }),
+    __metadata("design:type", String)
+], Channel.prototype, "inventory_channel_acc_stop", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ default: null }),
+    __metadata("design:type", String)
+], Channel.prototype, "inventory_channel_ip_mng_acc", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ default: null }),
+    __metadata("design:type", String)
+], Channel.prototype, "inventory_channel_acc_port", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ default: null }),
+    __metadata("design:type", String)
+], Channel.prototype, "inventory_channel_acc_model", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ default: null }),
+    __metadata("design:type", String)
+], Channel.prototype, "inventory_channel_acc_sn", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ default: null }),
+    __metadata("design:type", String)
+], Channel.prototype, "inventory_channel_acc_mac", void 0);
 exports.Channel = Channel = __decorate([
     (0, mongoose_1.Schema)()
 ], Channel);

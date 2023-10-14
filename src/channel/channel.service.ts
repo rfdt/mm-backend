@@ -1,16 +1,19 @@
 import { HttpCode, HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { Error, Model } from "mongoose";
+import { Error, Model, Schema } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { Channel, ChannelDocument } from "./channel.schema";
 import { findChannelsDTO } from "./dto/findChannels.dto";
 import {UpdatedChannelWithCreateDto} from "./dto/updatedChannelWithCreate.dto";
 import {newChannelDto} from "./dto/newChannel.dto";
+import { Hardware, HardwareDocument } from "./hardware.schema";
+import * as backup from "../tw.json";
 
 
 @Injectable()
 export class ChannelService {
 
-  constructor(@InjectModel(Channel.name) private ChannelModel: Model<ChannelDocument>) {
+  constructor(@InjectModel(Channel.name) private ChannelModel: Model<ChannelDocument>,
+              @InjectModel(Hardware.name) private HardwareModel: Model<HardwareDocument>) {
   }
 
   async findAllChannels(){
@@ -48,20 +51,23 @@ export class ChannelService {
               {add_info: {$regex: filters.addInfoFilter, $options: 'i'}},
               {note: {$regex: filters.addInfoFilter, $options: 'i'}},
             ]},
-          {channel_pe: {$regex: filters.peFilter, $options: 'i'}},
-          {rd_sr: {$regex: filters.rdFilter, $options: 'i'}},
-          {channel_agg_stop: {$regex: filters.channelAggStopFilter, $options: 'i'}},
-          {channel_vid:  {$regex: filters.vidFilter, $options: 'i'}},
-          {service_size: {$regex: filters.sizeFilter, $options: 'i'}},
-          {channel_acc_stop: {$regex: filters.channelAccStopFilter, $options: 'i'}},
-          {channel_ip_mng_acc: {$regex: filters.channelIpMngFilter, $options: 'i'}},
-          {channel_region: filters.channelRegionFilter}
-        ]
+          // {channel_pe: {$regex: filters.peFilter, $options: 'i'}},
+          // {rd_sr: {$regex: filters.rdFilter, $options: 'i'}},
+          // {channel_agg_stop: {$regex: filters.channelAggStopFilter, $options: 'i'}},
+          // {channel_vid:  {$regex: filters.vidFilter, $options: 'i'}},
+          // {service_size: {$regex: filters.sizeFilter, $options: 'i'}},
+          // {channel_acc_stop: {$regex: filters.channelAccStopFilter, $options: 'i'}},
+          // {channel_ip_mng_acc: {$regex: filters.channelIpMngFilter, $options: 'i'}},
+          // {channel_region: filters.channelRegionFilter}
+
+          //Todo Переписать поиск
+         ]
       }
       const data = await Promise.all([
         this.ChannelModel.find(query, null, {sort: {'_id': -1}}).count(),
         await this.ChannelModel.find(query, null, {sort: {'_id': -1}}).limit(limit)
       ])
+
       return ({channels: data[1], count:data[0]});
     }catch (e){
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
@@ -75,9 +81,6 @@ export class ChannelService {
       const streets = {};
       const services = [];
       const clients = [];
-      const pe = [];
-      const agg = [];
-      const acc = [];
 
       channels.forEach(channel=>{
         city.indexOf(channel.city) === -1 ? city.push(channel.city) : null;
@@ -91,12 +94,15 @@ export class ChannelService {
         }
         services.indexOf(channel.service) === -1 ? services.push(channel.service) : null;
         clients.indexOf(channel.client) === -1 ? clients.push(channel.client) : null;
-        pe.indexOf(channel.channel_pe) === -1 ? pe.push(channel.channel_pe) : null;
-        agg.indexOf(channel.channel_agg_stop) === -1 ? agg.push(channel.channel_agg_stop) : null;
-        acc.indexOf(channel.channel_acc_stop) === -1 ? acc.push(channel.channel_acc_stop) : null;
       })
 
-      return ({city, streets, services, clients, agg, acc, pe})
+      const hardwares = await this.getHardwareValues()
+
+      return ({city, streets, services, clients,
+        pe: hardwares[0],
+        ssw: hardwares[1],
+        stop: hardwares[2]
+      })
     }catch (e){
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
     }
@@ -152,22 +158,45 @@ export class ChannelService {
     }
   }
 
+  async getHardwareValues(){
+    return await Promise.all([
+      await this.HardwareModel.find({hardware_type: 'pe'}),
+      await this.HardwareModel.find({hardware_type: 'ssw'}),
+      await this.HardwareModel.find({hardware_type: 'stop'}),
+    ])
+  }
+
+  // channels = backup;
   // async insertTestValues(){
   //   try {
-  //     this.channels.forEach(async (channel, idx)=>{
+  //     backup.forEach(async (channel, idx)=>{
+  //       delete channel._id
+  //       const parsedDate = new Date(channel.date.split('.').reverse().join('.')).toString()
+  //       if(idx === 0) {
+  //         console.log(parsedDate)
+  //       }
   //       try {
   //         await this.ChannelModel.create({
   //           ...channel,
-  //           contact: channel.contact ? channel.contact : "XXX",
-  //           note: channel.note ? channel.note : "XXX",
-  //           channel_agg_stop: channel.channel_agg_stop ? channel.channel_agg_stop : "XXX",
-  //           channel_agg_port: channel.channel_agg_port ? channel.channel_agg_port : "XXXX",
-  //           add_info: channel.add_info ? channel.add_info : "XXX",
-  //           channel_vid: channel.channel_vid ?  channel.channel_vid : "XXX",
-  //           id_cms: channel.id_cms ? channel.id_cms : "XXX",
-  //           zabbix_avail: channel.zabbix_avail ? channel.zabbix_avail : "XXX",
-  //           id_oss: channel.id_oss ? channel.id_oss : "XXX",
-  //           rd_sr: channel.rd_sr ? channel.rd_sr : "XXX"
+  //           channel_verified: false,
+  //           channel_agg_stop: null,
+  //           channel_acc_stop: null,
+  //           channel_pe: null,
+  //           channel_pe_port: null,
+  //           channel_vid: null,
+  //           date: parsedDate,
+  //
+  //           inventory_channel_pe: channel.channel_pe,
+  //           inventory_channel_pe_port: channel.channel_pe_port,
+  //           inventory_channel_vid: channel.channel_vid,
+  //           inventory_channel_agg_stop: channel.channel_agg_stop,
+  //           inventory_channel_agg_port: channel.channel_agg_port,
+  //           inventory_channel_acc_stop: channel.channel_acc_stop,
+  //           inventory_channel_ip_mng_acc: channel.channel_ip_mng_acc,
+  //           inventory_channel_acc_port: channel.channel_acc_stop,
+  //           inventory_channel_acc_model: channel.channel_acc_model,
+  //           inventory_channel_acc_sn: channel.channel_acc_sn,
+  //           inventory_channel_acc_mac: channel.channel_acc_mac
   //         })
   //       } catch (e){
   //         console.log(e.message, "    ", idx);
@@ -177,6 +206,48 @@ export class ChannelService {
   //   }catch (e){
   //     throw new HttpException({e: e.message}, HttpStatus.BAD_REQUEST)
   //   }
+  // }
+
+  // async insertTestHarwaresValues(){
+  //   const channels = await this.findAllChannels();
+  //   const pe = [];
+  //   const peStop = [];
+  //   const agg = [];
+  //   const aggStop = [];
+  //
+  //   channels.forEach(async (channel)=>{
+  //     if (pe.indexOf(channel.inventory_channel_pe) === -1 ) {
+  //       pe.push(channel.inventory_channel_pe)
+  //       await this.HardwareModel.create({
+  //         title: channel.inventory_channel_pe ? channel.inventory_channel_pe : "SOME_BAD_IMPORTED_AR",
+  //         uplink: 'xe-1/0/1',
+  //         uplink_type: 'to_core',
+  //         hardware_type: 'pe'
+  //       })
+  //     }
+  //
+  //     if(agg.indexOf(channel.inventory_channel_agg_stop) === -1 && aggStop.indexOf(channel.inventory_channel_agg_stop) === -1){
+  //       if(channel.inventory_channel_agg_stop && channel.inventory_channel_agg_stop.split('-')[0].length === 4 && channel.inventory_channel_agg_stop.split('-')[1] && channel.inventory_channel_agg_stop.toLowerCase() !== 'apex-krym'){
+  //         agg.push(channel.inventory_channel_agg_stop)
+  //         await this.HardwareModel.create({
+  //           title: channel.inventory_channel_agg_stop ? channel.inventory_channel_agg_stop : "SOME_BAD_IMPORTED_SSW",
+  //           uplink: 'ge-1/0/1',
+  //           uplink_type: 'to_ar',
+  //           hardware_type: 'ssw'
+  //         })
+  //       }else {
+  //         aggStop.push(channel.inventory_channel_agg_stop)
+  //         await this.HardwareModel.create({
+  //           title: channel.inventory_channel_agg_stop ? channel.inventory_channel_agg_stop : "SOME_BODE_IMPORTED_STOP",
+  //           uplink: 'ge-1/0/2',
+  //           uplink_type: 'to_ar',
+  //           hardware_type: 'stop'
+  //         })
+  //       }
+  //     }
+  //   })
+  //
+  //   return('Try to check')
   // }
 
 }

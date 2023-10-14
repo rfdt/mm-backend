@@ -20,7 +20,7 @@ exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            mongoose_1.MongooseModule.forRoot('mongodb://127.0.0.1/ttm'),
+            mongoose_1.MongooseModule.forRoot('mongodb://127.0.0.1/ttm-variant-second'),
             channel_module_1.ChannelModule,
             user_module_1.UserModule,
             auth_module_1.AuthModule
