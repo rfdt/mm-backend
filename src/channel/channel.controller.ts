@@ -15,6 +15,7 @@ export class ChannelController {
     return await this.ChannelService.findAllChannels();
   }
 
+  @UseGuards(AuthGuard)
   @Post('/find')
   async findChannels(@Body() filters: findChannelsDTO){
     return await this.ChannelService.findChannels(filters, 25);

@@ -36,7 +36,7 @@ export class channel_acc_stopDto{
 }
 
 export class newChannelDto{
-    @IsString({ message: "Пожалуйста ввведите корректное поле addInfo"})
+    @IsString({ message: "Пожалуйста ввведите корректное поле "})
     add_info: string
 
     @IsString({ message: "Пожалуйста ввведите корректное поле "})

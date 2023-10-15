@@ -12,5 +12,4 @@ export declare class findChannelsDTO {
     sizeFilter: string;
     channelAccStopFilter: string;
     channelIpMngFilter: string;
-    channelRegionFilter: string;
 }

@@ -58,6 +58,28 @@ let ChannelService = class ChannelService {
                             { add_info: { $regex: filters.addInfoFilter, $options: 'i' } },
                             { note: { $regex: filters.addInfoFilter, $options: 'i' } },
                         ] },
+                    { $or: [
+                            { inventory_channel_pe: { $regex: filters.peFilter, $options: 'i' } },
+                            { channel_pe: { $regex: filters.peFilter, $options: 'i' } }
+                        ] },
+                    { $or: [
+                            { inventory_channel_agg_stop: { $regex: filters.channelAggStopFilter, $options: 'i' } },
+                            { 'channel_agg_stop.agg_stop': { $regex: filters.channelAggStopFilter, $options: 'i' } }
+                        ] },
+                    { rd_sr: { $regex: filters.rdFilter, $options: 'i' } },
+                    { $or: [
+                            { inventory_channel_vid: { $regex: filters.vidFilter, $options: 'i' } },
+                            { channel_vid: { $regex: filters.vidFilter, $options: 'i' } }
+                        ] },
+                    { service_size: { $regex: filters.sizeFilter, $options: 'i' } },
+                    { $or: [
+                            { inventory_channel_acc_stop: { $regex: filters.channelAccStopFilter, $options: 'i' } },
+                            { 'channel_acc_stop.acc_stop': { $regex: filters.channelAccStopFilter, $options: 'i' } }
+                        ] },
+                    { $or: [
+                            { 'channel_acc_stop.acc_ip_mng': { $regex: filters.channelIpMngFilter, $options: 'i' } },
+                            { inventory_channel_ip_mng_acc: { $regex: filters.channelIpMngFilter, $options: 'i' } }
+                        ] }
                 ]
             };
             const data = await Promise.all([

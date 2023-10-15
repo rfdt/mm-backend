@@ -66,8 +66,4 @@ __decorate([
     (0, class_validator_1.IsString)({ message: "Пожалуйста ввведите корректный фильтр - channelIpMngFilter" }),
     __metadata("design:type", String)
 ], findChannelsDTO.prototype, "channelIpMngFilter", void 0);
-__decorate([
-    (0, class_validator_1.IsString)({ message: "Пожалуйста ввведите корректный фильтр - channelRegionFilter" }),
-    __metadata("design:type", String)
-], findChannelsDTO.prototype, "channelRegionFilter", void 0);
 //# sourceMappingURL=findChannels.dto.js.map

@@ -38,7 +38,8 @@ export class AuthGuard implements CanActivate {
 
       return user.roles.some(role => requiredRoles.includes(role));
     } catch (e) {
-      throw new HttpException( e.message, HttpStatus.UNAUTHORIZED)
+      if (e.message === 'jwt expired') e.message = 'Ваш ключ авторизации истёк! Для безопасности требуется повторная войти в учетную запись';
+      throw new HttpException( e.message , HttpStatus.UNAUTHORIZED)
     }
   }
 

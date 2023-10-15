@@ -16,6 +16,7 @@ exports.ChannelController = void 0;
 const common_1 = require("@nestjs/common");
 const channel_service_1 = require("./channel.service");
 const findChannels_dto_1 = require("./dto/findChannels.dto");
+const auth_guard_1 = require("../auth/auth.guard");
 const updatedChannelWithCreate_dto_1 = require("./dto/updatedChannelWithCreate.dto");
 const newChannel_dto_1 = require("./dto/newChannel.dto");
 let ChannelController = class ChannelController {
@@ -61,6 +62,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "findAllChannels", null);
 __decorate([
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Post)('/find'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),

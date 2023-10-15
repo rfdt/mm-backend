@@ -10,7 +10,7 @@ import { JwtModule } from "@nestjs/jwt";
     JwtModule.register({
       secret: 'SOME_SECRET_KEY',
       signOptions: {
-        expiresIn: '24h'
+        expiresIn: '16h'
       }
     })
   ],
