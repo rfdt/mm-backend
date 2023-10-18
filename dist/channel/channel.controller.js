@@ -53,6 +53,9 @@ let ChannelController = class ChannelController {
     async createChannel(newChannelDto) {
         return await this.ChannelService.createChannel(newChannelDto);
     }
+    async backupWithFtp() {
+        return await this.ChannelService.backupWithFtp();
+    }
 };
 exports.ChannelController = ChannelController;
 __decorate([
@@ -122,6 +125,12 @@ __decorate([
     __metadata("design:paramtypes", [newChannel_dto_1.newChannelDto]),
     __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "createChannel", null);
+__decorate([
+    (0, common_1.Get)('/backup'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], ChannelController.prototype, "backupWithFtp", null);
 exports.ChannelController = ChannelController = __decorate([
     (0, common_1.Controller)('channels'),
     __metadata("design:paramtypes", [channel_service_1.ChannelService])

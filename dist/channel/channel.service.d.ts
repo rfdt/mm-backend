@@ -77,4 +77,7 @@ export declare class ChannelService {
     })[], (import("mongoose").Document<unknown, {}, HardwareDocument> & Hardware & import("mongoose").Document<any, any, any> & {
         _id: import("mongoose").Types.ObjectId;
     })[]]>;
+    backupWithFtp(): Promise<{
+        message: string;
+    }>;
 }

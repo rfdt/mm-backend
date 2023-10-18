@@ -62,6 +62,11 @@ export class ChannelController {
     return await this.ChannelService.createChannel(newChannelDto);
   }
 
+  @Get('/backup')
+  async backupWithFtp(){
+    return await this.ChannelService.backupWithFtp();
+  }
+
   // @Get('/insert')
   //  async insertTestValues(){
   //   return  await this.ChannelService.insertTestValues();

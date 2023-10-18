@@ -16,8 +16,12 @@ exports.ChannelService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("mongoose");
 const mongoose_2 = require("@nestjs/mongoose");
+const stream_1 = require("stream");
 const channel_schema_1 = require("./channel.schema");
 const hardware_schema_1 = require("./hardware.schema");
+const xlsx = require("xlsx");
+const ftp = require("basic-ftp");
+const transformToBase_1 = require("./utils/transformToBase");
 let ChannelService = class ChannelService {
     constructor(ChannelModel, HardwareModel) {
         this.ChannelModel = ChannelModel;
@@ -48,8 +52,14 @@ let ChannelService = class ChannelService {
                     { street: { $regex: filters.streetFilter, $options: 'i' } },
                     { home: { $regex: filters.homeFilter, $options: 'i' } },
                     { service: { $regex: filters.serviceFilter, $options: 'i' } },
-                    { status: filters.statusFilter ? { $regex: filters.statusFilter, $options: 'i' } : { $in: ["ВКЛ", "ПАУЗА", "РЕЗЕРВ", "ОТКЛ"] } },
-                    { $or: [
+                    {
+                        status: filters.statusFilter ? {
+                            $regex: filters.statusFilter,
+                            $options: 'i'
+                        } : { $in: ["ВКЛ", "ПАУЗА", "РЕЗЕРВ", "ОТКЛ"] }
+                    },
+                    {
+                        $or: [
                             { id_tbcd: { $regex: filters.addInfoFilter, $options: 'i' } },
                             { id_suz: { $regex: filters.addInfoFilter, $options: 'i' } },
                             { id_cms: { $regex: filters.addInfoFilter, $options: 'i' } },
@@ -57,29 +67,40 @@ let ChannelService = class ChannelService {
                             { client: { $regex: filters.addInfoFilter, $options: 'i' } },
                             { add_info: { $regex: filters.addInfoFilter, $options: 'i' } },
                             { note: { $regex: filters.addInfoFilter, $options: 'i' } },
-                        ] },
-                    { $or: [
+                        ]
+                    },
+                    {
+                        $or: [
                             { inventory_channel_pe: { $regex: filters.peFilter, $options: 'i' } },
                             { channel_pe: { $regex: filters.peFilter, $options: 'i' } }
-                        ] },
-                    { $or: [
+                        ]
+                    },
+                    {
+                        $or: [
                             { inventory_channel_agg_stop: { $regex: filters.channelAggStopFilter, $options: 'i' } },
                             { 'channel_agg_stop.agg_stop': { $regex: filters.channelAggStopFilter, $options: 'i' } }
-                        ] },
+                        ]
+                    },
                     { rd_sr: { $regex: filters.rdFilter, $options: 'i' } },
-                    { $or: [
+                    {
+                        $or: [
                             { inventory_channel_vid: { $regex: filters.vidFilter, $options: 'i' } },
                             { channel_vid: { $regex: filters.vidFilter, $options: 'i' } }
-                        ] },
+                        ]
+                    },
                     { service_size: { $regex: filters.sizeFilter, $options: 'i' } },
-                    { $or: [
+                    {
+                        $or: [
                             { inventory_channel_acc_stop: { $regex: filters.channelAccStopFilter, $options: 'i' } },
                             { 'channel_acc_stop.acc_stop': { $regex: filters.channelAccStopFilter, $options: 'i' } }
-                        ] },
-                    { $or: [
+                        ]
+                    },
+                    {
+                        $or: [
                             { 'channel_acc_stop.acc_ip_mng': { $regex: filters.channelIpMngFilter, $options: 'i' } },
                             { inventory_channel_ip_mng_acc: { $regex: filters.channelIpMngFilter, $options: 'i' } }
-                        ] }
+                        ]
+                    }
                 ]
             };
             const data = await Promise.all([
@@ -114,7 +135,8 @@ let ChannelService = class ChannelService {
                 clients.indexOf(channel.client) === -1 ? clients.push(channel.client) : null;
             });
             const hardwares = await this.getHardwareValues();
-            return ({ city, streets, services, clients,
+            return ({
+                city, streets, services, clients,
                 pe: hardwares[0],
                 ssw: hardwares[1],
                 stop: hardwares[2]
@@ -176,6 +198,30 @@ let ChannelService = class ChannelService {
             await this.HardwareModel.find({ hardware_type: 'ssw' }),
             await this.HardwareModel.find({ hardware_type: 'stop' }),
         ]);
+    }
+    async backupWithFtp() {
+        try {
+            const channels = await this.ChannelModel.find({});
+            const transformed = channels ? (0, transformToBase_1.transformToBase)(channels) : [];
+            const worksheet = xlsx.utils.json_to_sheet(transformed);
+            const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+            const excelBuffer = xlsx.write(workbook, { type: "buffer" });
+            const excel_stream = stream_1.Readable.from(excelBuffer);
+            const client = new ftp.Client();
+            await client.access({
+                host: "127.0.0.1",
+                user: "ruslan",
+                password: "vfvjxrf2525",
+                secure: true,
+                secureOptions: { rejectUnauthorized: false }
+            });
+            await client.uploadFrom(excel_stream, `Backup ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString().split(':').join('-')}.xlsx`);
+            client.close();
+            return ({ message: "Back up successfully" });
+        }
+        catch (e) {
+            throw new common_1.HttpException(e.message, common_1.HttpStatus.BAD_REQUEST);
+        }
     }
 };
 exports.ChannelService = ChannelService;

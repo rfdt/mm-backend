@@ -74,4 +74,7 @@ export declare class ChannelController {
     createChannel(newChannelDto: newChannelDto): Promise<import("mongoose").Document<unknown, {}, import("./channel.schema").ChannelDocument> & import("./channel.schema").Channel & import("mongoose").Document<any, any, any> & {
         _id: import("mongoose").Types.ObjectId;
     }>;
+    backupWithFtp(): Promise<{
+        message: string;
+    }>;
 }
