@@ -28,6 +28,7 @@ import { findChannelsDTO } from "./dto/findChannels.dto";
 import { UpdatedChannelWithCreateDto } from "./dto/updatedChannelWithCreate.dto";
 import { newChannelDto } from "./dto/newChannel.dto";
 import { Hardware, HardwareDocument } from "./hardware.schema";
+import { CreateHardwareDTO } from "./dto/createHardware";
 export declare class ChannelService {
     private ChannelModel;
     private HardwareModel;
@@ -79,5 +80,8 @@ export declare class ChannelService {
     })[]]>;
     backupWithFtp(): Promise<{
         message: string;
+    }>;
+    createHardware(createHardwareDto: CreateHardwareDTO): Promise<import("mongoose").Document<unknown, {}, HardwareDocument> & Hardware & import("mongoose").Document<any, any, any> & {
+        _id: import("mongoose").Types.ObjectId;
     }>;
 }

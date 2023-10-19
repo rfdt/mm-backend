@@ -4,6 +4,7 @@ import { findChannelsDTO } from "./dto/findChannels.dto";
 import { AuthGuard } from "../auth/auth.guard";
 import {UpdatedChannelWithCreateDto} from "./dto/updatedChannelWithCreate.dto";
 import {newChannelDto} from "./dto/newChannel.dto";
+import {CreateHardwareDTO} from "./dto/createHardware";
 @Controller('channels')
 export class ChannelController {
 
@@ -60,6 +61,11 @@ export class ChannelController {
   @Post('/create')
   async createChannel(@Body() newChannelDto: newChannelDto){
     return await this.ChannelService.createChannel(newChannelDto);
+  }
+
+  @Post('/create/hardware')
+  async createHardware(@Body()createHardwareDto: CreateHardwareDTO){
+    return await this.ChannelService.createHardware(createHardwareDto);
   }
 
   @Get('/backup')

@@ -9,8 +9,9 @@ import {newChannelDto} from "./dto/newChannel.dto";
 import {Hardware, HardwareDocument} from "./hardware.schema";
 import * as xlsx from "xlsx";
 import * as ftp from "basic-ftp";
-import * as backup from "../tw.json";
+// import * as backup from "../tw.json";
 import {transformToBase} from "./utils/transformToBase";
+import {CreateHardwareDTO} from "./dto/createHardware";
 
 
 @Injectable()
@@ -224,6 +225,17 @@ export class ChannelService {
         }
     }
 
+    async createHardware(createHardwareDto: CreateHardwareDTO){
+        try {
+            const newHardware = new this.HardwareModel({
+                ...createHardwareDto
+            })
+            return await newHardware.save();
+        }catch (e){
+            throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
+        }
+    }
+
     // channels = backup;
     // async insertTestValues(){
     //   try {
@@ -251,7 +263,7 @@ export class ChannelService {
     //           inventory_channel_agg_port: channel.channel_agg_port,
     //           inventory_channel_acc_stop: channel.channel_acc_stop,
     //           inventory_channel_ip_mng_acc: channel.channel_ip_mng_acc,
-    //           inventory_channel_acc_port: channel.channel_acc_stop,
+    //           inventory_channel_acc_port: channel.channel_acc_port,
     //           inventory_channel_acc_model: channel.channel_acc_model,
     //           inventory_channel_acc_sn: channel.channel_acc_sn,
     //           inventory_channel_acc_mac: channel.channel_acc_mac

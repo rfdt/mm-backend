@@ -5,7 +5,7 @@ import { Channel } from "./channel.schema";
 export type HardwareDocument = Hardware & Document;
 @Schema()
 export class Hardware {
-  @Prop({required: true, default: ""})
+  @Prop({required: true, default: "", unique: true})
   title: string;
 
   @Prop({required: true, default: ""})

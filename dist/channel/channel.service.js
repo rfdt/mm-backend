@@ -223,6 +223,17 @@ let ChannelService = class ChannelService {
             throw new common_1.HttpException(e.message, common_1.HttpStatus.BAD_REQUEST);
         }
     }
+    async createHardware(createHardwareDto) {
+        try {
+            const newHardware = new this.HardwareModel({
+                ...createHardwareDto
+            });
+            return await newHardware.save();
+        }
+        catch (e) {
+            throw new common_1.HttpException(e.message, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
 };
 exports.ChannelService = ChannelService;
 exports.ChannelService = ChannelService = __decorate([
