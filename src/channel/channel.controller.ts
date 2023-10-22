@@ -68,6 +68,12 @@ export class ChannelController {
     return await this.ChannelService.createHardware(createHardwareDto);
   }
 
+  @Post('/edit/hardware')
+  async editHardware(@Body()editHardwareDto: CreateHardwareDTO){
+    return this.ChannelService.editHardware(editHardwareDto);
+  }
+
+
   @Get('/backup')
   async backupWithFtp(){
     return await this.ChannelService.backupWithFtp();

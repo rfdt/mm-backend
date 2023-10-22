@@ -48,64 +48,64 @@ let ChannelService = class ChannelService {
         try {
             const query = {
                 $and: [
-                    { city: { $regex: filters.cityFilter, $options: 'i' } },
-                    { street: { $regex: filters.streetFilter, $options: 'i' } },
-                    { home: { $regex: filters.homeFilter, $options: 'i' } },
-                    { service: { $regex: filters.serviceFilter, $options: 'i' } },
+                    { city: { $regex: filters.cityFilter, $options: "i" } },
+                    { street: { $regex: filters.streetFilter, $options: "i" } },
+                    { home: { $regex: filters.homeFilter, $options: "i" } },
+                    { service: { $regex: filters.serviceFilter, $options: "i" } },
                     {
                         status: filters.statusFilter ? {
                             $regex: filters.statusFilter,
-                            $options: 'i'
+                            $options: "i"
                         } : { $in: ["ВКЛ", "ПАУЗА", "РЕЗЕРВ", "ОТКЛ"] }
                     },
                     {
                         $or: [
-                            { id_tbcd: { $regex: filters.addInfoFilter, $options: 'i' } },
-                            { id_suz: { $regex: filters.addInfoFilter, $options: 'i' } },
-                            { id_cms: { $regex: filters.addInfoFilter, $options: 'i' } },
-                            { id_oss: { $regex: filters.addInfoFilter, $options: 'i' } },
-                            { client: { $regex: filters.addInfoFilter, $options: 'i' } },
-                            { add_info: { $regex: filters.addInfoFilter, $options: 'i' } },
-                            { note: { $regex: filters.addInfoFilter, $options: 'i' } },
+                            { id_tbcd: { $regex: filters.addInfoFilter, $options: "i" } },
+                            { id_suz: { $regex: filters.addInfoFilter, $options: "i" } },
+                            { id_cms: { $regex: filters.addInfoFilter, $options: "i" } },
+                            { id_oss: { $regex: filters.addInfoFilter, $options: "i" } },
+                            { client: { $regex: filters.addInfoFilter, $options: "i" } },
+                            { add_info: { $regex: filters.addInfoFilter, $options: "i" } },
+                            { note: { $regex: filters.addInfoFilter, $options: "i" } }
                         ]
                     },
                     {
                         $or: [
-                            { inventory_channel_pe: { $regex: filters.peFilter, $options: 'i' } },
-                            { channel_pe: { $regex: filters.peFilter, $options: 'i' } }
+                            { inventory_channel_pe: { $regex: filters.peFilter, $options: "i" } },
+                            { channel_pe: { $regex: filters.peFilter, $options: "i" } }
                         ]
                     },
                     {
                         $or: [
-                            { inventory_channel_agg_stop: { $regex: filters.channelAggStopFilter, $options: 'i' } },
-                            { 'channel_agg_stop.agg_stop': { $regex: filters.channelAggStopFilter, $options: 'i' } }
+                            { inventory_channel_agg_stop: { $regex: filters.channelAggStopFilter, $options: "i" } },
+                            { "channel_agg_stop.agg_stop": { $regex: filters.channelAggStopFilter, $options: "i" } }
                         ]
                     },
-                    { rd_sr: { $regex: filters.rdFilter, $options: 'i' } },
+                    { rd_sr: { $regex: filters.rdFilter, $options: "i" } },
                     {
                         $or: [
-                            { inventory_channel_vid: { $regex: filters.vidFilter, $options: 'i' } },
-                            { channel_vid: { $regex: filters.vidFilter, $options: 'i' } }
+                            { inventory_channel_vid: { $regex: filters.vidFilter, $options: "i" } },
+                            { channel_vid: { $regex: filters.vidFilter, $options: "i" } }
                         ]
                     },
-                    { service_size: { $regex: filters.sizeFilter, $options: 'i' } },
+                    { service_size: { $regex: filters.sizeFilter, $options: "i" } },
                     {
                         $or: [
-                            { inventory_channel_acc_stop: { $regex: filters.channelAccStopFilter, $options: 'i' } },
-                            { 'channel_acc_stop.acc_stop': { $regex: filters.channelAccStopFilter, $options: 'i' } }
+                            { inventory_channel_acc_stop: { $regex: filters.channelAccStopFilter, $options: "i" } },
+                            { "channel_acc_stop.acc_stop": { $regex: filters.channelAccStopFilter, $options: "i" } }
                         ]
                     },
                     {
                         $or: [
-                            { 'channel_acc_stop.acc_ip_mng': { $regex: filters.channelIpMngFilter, $options: 'i' } },
-                            { inventory_channel_ip_mng_acc: { $regex: filters.channelIpMngFilter, $options: 'i' } }
+                            { "channel_acc_stop.acc_ip_mng": { $regex: filters.channelIpMngFilter, $options: "i" } },
+                            { inventory_channel_ip_mng_acc: { $regex: filters.channelIpMngFilter, $options: "i" } }
                         ]
                     }
                 ]
             };
             const data = await Promise.all([
-                this.ChannelModel.find(query, null, { sort: { '_id': -1 } }).count(),
-                await this.ChannelModel.find(query, null, { sort: { '_id': -1 } }).limit(limit)
+                this.ChannelModel.find(query, null, { sort: { "_id": -1 } }).count(),
+                await this.ChannelModel.find(query, null, { sort: { "_id": -1 } }).limit(limit)
             ]);
             return ({ channels: data[1], count: data[0] });
         }
@@ -155,7 +155,7 @@ let ChannelService = class ChannelService {
         }
     }
     async testError() {
-        throw new common_1.HttpException('Тестовая ошибка', common_1.HttpStatus.BAD_REQUEST);
+        throw new common_1.HttpException("Тестовая ошибка", common_1.HttpStatus.BAD_REQUEST);
     }
     async updateAndCreate(updatedChannelWithCreateDto) {
         try {
@@ -194,9 +194,9 @@ let ChannelService = class ChannelService {
     }
     async getHardwareValues() {
         return await Promise.all([
-            await this.HardwareModel.find({ hardware_type: 'pe' }),
-            await this.HardwareModel.find({ hardware_type: 'ssw' }),
-            await this.HardwareModel.find({ hardware_type: 'stop' }),
+            await this.HardwareModel.find({ hardware_type: "pe" }),
+            await this.HardwareModel.find({ hardware_type: "ssw" }),
+            await this.HardwareModel.find({ hardware_type: "stop" })
         ]);
     }
     async backupWithFtp() {
@@ -204,7 +204,7 @@ let ChannelService = class ChannelService {
             const channels = await this.ChannelModel.find({});
             const transformed = channels ? (0, transformToBase_1.transformToBase)(channels) : [];
             const worksheet = xlsx.utils.json_to_sheet(transformed);
-            const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+            const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
             const excelBuffer = xlsx.write(workbook, { type: "buffer" });
             const excel_stream = stream_1.Readable.from(excelBuffer);
             const client = new ftp.Client();
@@ -215,7 +215,7 @@ let ChannelService = class ChannelService {
                 secure: true,
                 secureOptions: { rejectUnauthorized: false }
             });
-            await client.uploadFrom(excel_stream, `Backup ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString().split(':').join('-')}.xlsx`);
+            await client.uploadFrom(excel_stream, `Backup ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString().split(":").join("-")}.xlsx`);
             client.close();
             return ({ message: "Back up successfully" });
         }
@@ -229,6 +229,67 @@ let ChannelService = class ChannelService {
                 ...createHardwareDto
             });
             return await newHardware.save();
+        }
+        catch (e) {
+            throw new common_1.HttpException(e.message, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
+    async editHardware(editHardwareDto) {
+        try {
+            const updatedHardware = { ...editHardwareDto };
+            delete updatedHardware._id;
+            const oldVersionHardware = await this.HardwareModel.findByIdAndUpdate(editHardwareDto._id);
+            const updatedHardwareSave = await this.HardwareModel.findByIdAndUpdate(editHardwareDto._id, { ...updatedHardware }, { new: true });
+            if (oldVersionHardware.title !== updatedHardwareSave.title) {
+                await this.updateChannelsHardwareHostname(oldVersionHardware, updatedHardwareSave);
+            }
+            if (oldVersionHardware.uplink !== updatedHardwareSave.uplink) {
+                await this.updateChannelHardwareLinks(oldVersionHardware, updatedHardwareSave);
+            }
+            return updatedHardwareSave;
+        }
+        catch (e) {
+            throw new common_1.HttpException(e.message, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
+    async updateChannelsHardwareHostname(oldVersion, newVersion) {
+        try {
+            if (newVersion.hardware_type === "pe") {
+                const findedChannelToUpdate = await this.ChannelModel.find({ channel_pe: oldVersion.title });
+                findedChannelToUpdate.forEach(async (channel) => {
+                    await this.ChannelModel.findByIdAndUpdate(channel._id, { channel_pe: newVersion.title });
+                });
+            }
+            if (newVersion.hardware_type === "ssw" || newVersion.hardware_type === "stop") {
+                const findedChannelToUpdate = await this.ChannelModel.find({ "channel_agg_stop.agg_stop": oldVersion.title });
+                findedChannelToUpdate.forEach(async (channel) => {
+                    const findedIndex = channel.channel_agg_stop.findIndex(agg_stop_obj => agg_stop_obj.agg_stop === oldVersion.title);
+                    const updatedAggChannel = { ...channel.toJSON() };
+                    updatedAggChannel.channel_agg_stop[findedIndex].agg_stop = newVersion.title;
+                    await this.ChannelModel.findByIdAndUpdate(updatedAggChannel._id, { ...updatedAggChannel });
+                });
+            }
+        }
+        catch (e) {
+            throw new common_1.HttpException(e.message, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
+    async updateChannelHardwareLinks(oldVersion, newVersion) {
+        try {
+            if (newVersion.hardware_type === "ssw" || newVersion.hardware_type === "stop") {
+                const findedChannelToUpdate = await this.ChannelModel.find({ "channel_agg_stop.agg_stop": newVersion.title });
+                findedChannelToUpdate.forEach(async (channel) => {
+                    const findedIndex = channel.channel_agg_stop.findIndex(agg_stop_obj => agg_stop_obj.agg_stop === newVersion.title);
+                    const updatedAggChannel = { ...channel.toJSON() };
+                    if (findedIndex === 0) {
+                        updatedAggChannel.channel_pe_port = newVersion.uplink;
+                    }
+                    else {
+                        updatedAggChannel.channel_agg_stop[findedIndex - 1].agg_port = newVersion.uplink;
+                    }
+                    await this.ChannelModel.findByIdAndUpdate(updatedAggChannel._id, { ...updatedAggChannel });
+                });
+            }
         }
         catch (e) {
             throw new common_1.HttpException(e.message, common_1.HttpStatus.BAD_REQUEST);

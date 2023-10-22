@@ -27,6 +27,7 @@ import { ChannelService } from "./channel.service";
 import { findChannelsDTO } from "./dto/findChannels.dto";
 import { UpdatedChannelWithCreateDto } from "./dto/updatedChannelWithCreate.dto";
 import { newChannelDto } from "./dto/newChannel.dto";
+import { CreateHardwareDTO } from "./dto/createHardware";
 export declare class ChannelController {
     private readonly ChannelService;
     constructor(ChannelService: ChannelService);
@@ -72,6 +73,12 @@ export declare class ChannelController {
         _id: import("mongoose").Types.ObjectId;
     }>;
     createChannel(newChannelDto: newChannelDto): Promise<import("mongoose").Document<unknown, {}, import("./channel.schema").ChannelDocument> & import("./channel.schema").Channel & import("mongoose").Document<any, any, any> & {
+        _id: import("mongoose").Types.ObjectId;
+    }>;
+    createHardware(createHardwareDto: CreateHardwareDTO): Promise<import("mongoose").Document<unknown, {}, import("./hardware.schema").HardwareDocument> & import("./hardware.schema").Hardware & import("mongoose").Document<any, any, any> & {
+        _id: import("mongoose").Types.ObjectId;
+    }>;
+    editHardware(editHardwareDto: CreateHardwareDTO): Promise<import("mongoose").Document<unknown, {}, import("./hardware.schema").HardwareDocument> & import("./hardware.schema").Hardware & import("mongoose").Document<any, any, any> & {
         _id: import("mongoose").Types.ObjectId;
     }>;
     backupWithFtp(): Promise<{

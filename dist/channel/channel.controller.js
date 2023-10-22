@@ -19,6 +19,7 @@ const findChannels_dto_1 = require("./dto/findChannels.dto");
 const auth_guard_1 = require("../auth/auth.guard");
 const updatedChannelWithCreate_dto_1 = require("./dto/updatedChannelWithCreate.dto");
 const newChannel_dto_1 = require("./dto/newChannel.dto");
+const createHardware_1 = require("./dto/createHardware");
 let ChannelController = class ChannelController {
     constructor(ChannelService) {
         this.ChannelService = ChannelService;
@@ -52,6 +53,12 @@ let ChannelController = class ChannelController {
     }
     async createChannel(newChannelDto) {
         return await this.ChannelService.createChannel(newChannelDto);
+    }
+    async createHardware(createHardwareDto) {
+        return await this.ChannelService.createHardware(createHardwareDto);
+    }
+    async editHardware(editHardwareDto) {
+        return this.ChannelService.editHardware(editHardwareDto);
     }
     async backupWithFtp() {
         return await this.ChannelService.backupWithFtp();
@@ -125,6 +132,20 @@ __decorate([
     __metadata("design:paramtypes", [newChannel_dto_1.newChannelDto]),
     __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "createChannel", null);
+__decorate([
+    (0, common_1.Post)('/create/hardware'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [createHardware_1.CreateHardwareDTO]),
+    __metadata("design:returntype", Promise)
+], ChannelController.prototype, "createHardware", null);
+__decorate([
+    (0, common_1.Post)('/edit/hardware'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [createHardware_1.CreateHardwareDTO]),
+    __metadata("design:returntype", Promise)
+], ChannelController.prototype, "editHardware", null);
 __decorate([
     (0, common_1.Get)('/backup'),
     __metadata("design:type", Function),

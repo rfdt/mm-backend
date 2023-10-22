@@ -84,4 +84,9 @@ export declare class ChannelService {
     createHardware(createHardwareDto: CreateHardwareDTO): Promise<import("mongoose").Document<unknown, {}, HardwareDocument> & Hardware & import("mongoose").Document<any, any, any> & {
         _id: import("mongoose").Types.ObjectId;
     }>;
+    editHardware(editHardwareDto: CreateHardwareDTO): Promise<import("mongoose").Document<unknown, {}, HardwareDocument> & Hardware & import("mongoose").Document<any, any, any> & {
+        _id: import("mongoose").Types.ObjectId;
+    }>;
+    updateChannelsHardwareHostname(oldVersion: any, newVersion: any): Promise<void>;
+    updateChannelHardwareLinks(oldVersion: any, newVersion: any): Promise<void>;
 }

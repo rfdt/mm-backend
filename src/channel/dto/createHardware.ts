@@ -12,4 +12,6 @@ export class CreateHardwareDTO{
 
     @IsString({ message: "Пожалуйста ввведите корректное значение - hardware_type"})
     hardware_type: string;
+
+    _id: string;
 }
