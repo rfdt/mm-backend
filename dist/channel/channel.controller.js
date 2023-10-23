@@ -20,6 +20,7 @@ const auth_guard_1 = require("../auth/auth.guard");
 const updatedChannelWithCreate_dto_1 = require("./dto/updatedChannelWithCreate.dto");
 const newChannel_dto_1 = require("./dto/newChannel.dto");
 const createHardware_1 = require("./dto/createHardware");
+const userId_decorator_1 = require("../auth/userId.decorator");
 let ChannelController = class ChannelController {
     constructor(ChannelService) {
         this.ChannelService = ChannelService;
@@ -53,6 +54,12 @@ let ChannelController = class ChannelController {
     }
     async createChannel(newChannelDto) {
         return await this.ChannelService.createChannel(newChannelDto);
+    }
+    async verifyChannel(verifiedChannelDto, userID) {
+        return await this.ChannelService.verifyChannel(verifiedChannelDto, userID);
+    }
+    async getRelatedChannels(params) {
+        return await this.ChannelService.getRelatedChannels(params.id);
     }
     async createHardware(createHardwareDto) {
         return await this.ChannelService.createHardware(createHardwareDto);
@@ -132,6 +139,22 @@ __decorate([
     __metadata("design:paramtypes", [newChannel_dto_1.newChannelDto]),
     __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "createChannel", null);
+__decorate([
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    (0, common_1.Post)('/verify'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, userId_decorator_1.UserID)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [updatedChannelWithCreate_dto_1.UpdatedChannelWithCreateDto, String]),
+    __metadata("design:returntype", Promise)
+], ChannelController.prototype, "verifyChannel", null);
+__decorate([
+    (0, common_1.Get)('/related/:id'),
+    __param(0, (0, common_1.Param)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ChannelController.prototype, "getRelatedChannels", null);
 __decorate([
     (0, common_1.Post)('/create/hardware'),
     __param(0, (0, common_1.Body)()),

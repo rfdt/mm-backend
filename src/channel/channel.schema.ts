@@ -1,5 +1,6 @@
 import { Prop, raw, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose, { Document } from 'mongoose';
+import mongoose, {Document, Mongoose} from 'mongoose';
+import {User} from "../user/user.schema";
 export type ChannelDocument = Channel & Document;
 @Schema()
 export class Channel {
@@ -106,7 +107,11 @@ export class Channel {
   @Prop({required: true, default: true})
   channel_verified: boolean;
 
+  @Prop({ type: mongoose.Schema.Types.ObjectId , ref: 'User'})
+  channel_verified_user: User;
 
+  @Prop()
+  channel_verified_date: Date;
 
 
   /* BackDoor for inventory*/

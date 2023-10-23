@@ -31,7 +31,7 @@ export class ChannelService {
 
   async findChannelById(channel_id: string) {
     try {
-      const channel = await this.ChannelModel.findOne({ _id: channel_id });
+      const channel = await this.ChannelModel.findOne({ _id: channel_id }).populate('channel_verified_user');
       return channel;
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
@@ -162,7 +162,7 @@ export class ChannelService {
         { status: "ИЗМ" }, { new: true });
       const newChannel = new this.ChannelModel({
         ...updatedChannelWithCreateDto,
-        channel_ref: updatedChannelWithCreateDto.channel_ref ? updatedChannelWithCreateDto.channel_ref : updatedChannelWithCreateDto._id,
+        channel_ref: changedStatusField.channel_ref ? changedStatusField.channel_ref : updatedChannelWithCreateDto._id,
         _id: null
       });
       const newUpdatedChannel = await newChannel.save();
@@ -189,6 +189,31 @@ export class ChannelService {
       const newChannelDocument = new this.ChannelModel({ ...newChannel });
       return await newChannelDocument.save();
     } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async verifyChannel(verifiedChannelDto: UpdatedChannelWithCreateDto, userID: string){
+    try {
+      const verifiedChannel = await this.ChannelModel
+          .findByIdAndUpdate(verifiedChannelDto._id, {...verifiedChannelDto,
+            channel_verified: true,
+            channel_verified_user: userID,
+            channel_verified_date: new Date().toString()
+          }, {new: true}).populate('channel_verified_user')
+      return verifiedChannel;
+    }catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async getRelatedChannels(channelId){
+    try {
+      const channel = await this.findChannelById(channelId);
+      const relatedChannel = await this.ChannelModel.find({_id:{$ne:channel._id}, channel_ref: channel.channel_ref}, null, { sort: { "_id": -1 } })
+      const parentChannel = await this.findChannelById(String(channel.channel_ref));
+      return relatedChannel.concat([parentChannel]);
+    }catch (e){
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
     }
   }

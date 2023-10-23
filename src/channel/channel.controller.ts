@@ -5,6 +5,7 @@ import { AuthGuard } from "../auth/auth.guard";
 import {UpdatedChannelWithCreateDto} from "./dto/updatedChannelWithCreate.dto";
 import {newChannelDto} from "./dto/newChannel.dto";
 import {CreateHardwareDTO} from "./dto/createHardware";
+import {UserID} from "../auth/userId.decorator";
 @Controller('channels')
 export class ChannelController {
 
@@ -61,6 +62,17 @@ export class ChannelController {
   @Post('/create')
   async createChannel(@Body() newChannelDto: newChannelDto){
     return await this.ChannelService.createChannel(newChannelDto);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/verify')
+  async verifyChannel(@Body() verifiedChannelDto: UpdatedChannelWithCreateDto, @UserID() userID: string){
+    return await this.ChannelService.verifyChannel(verifiedChannelDto, userID);
+  }
+
+  @Get('/related/:id')
+  async getRelatedChannels(@Param() params){
+    return await this.ChannelService.getRelatedChannels(params.id);
   }
 
   @Post('/create/hardware')

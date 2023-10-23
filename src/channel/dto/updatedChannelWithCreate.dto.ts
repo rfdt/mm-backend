@@ -87,5 +87,6 @@ export class UpdatedChannelWithCreateDto{
 
     @IsString({ message: "Пожалуйста ввведите корректное поле "})
     _id:string
+
     channel_ref: string
 }
