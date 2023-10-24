@@ -37,7 +37,7 @@ let ChannelService = class ChannelService {
     }
     async findChannelById(channel_id) {
         try {
-            const channel = await this.ChannelModel.findOne({ _id: channel_id });
+            const channel = await this.ChannelModel.findOne({ _id: channel_id }).populate('channel_verified_user');
             return channel;
         }
         catch (e) {
@@ -162,7 +162,7 @@ let ChannelService = class ChannelService {
             const changedStatusField = await this.ChannelModel.findByIdAndUpdate(updatedChannelWithCreateDto._id, { status: "ИЗМ" }, { new: true });
             const newChannel = new this.ChannelModel({
                 ...updatedChannelWithCreateDto,
-                channel_ref: updatedChannelWithCreateDto.channel_ref ? updatedChannelWithCreateDto.channel_ref : updatedChannelWithCreateDto._id,
+                channel_ref: changedStatusField.channel_ref ? changedStatusField.channel_ref : updatedChannelWithCreateDto._id,
                 _id: null
             });
             const newUpdatedChannel = await newChannel.save();
@@ -187,6 +187,31 @@ let ChannelService = class ChannelService {
         try {
             const newChannelDocument = new this.ChannelModel({ ...newChannel });
             return await newChannelDocument.save();
+        }
+        catch (e) {
+            throw new common_1.HttpException(e.message, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
+    async verifyChannel(verifiedChannelDto, userID) {
+        try {
+            const verifiedChannel = await this.ChannelModel
+                .findByIdAndUpdate(verifiedChannelDto._id, { ...verifiedChannelDto,
+                channel_verified: true,
+                channel_verified_user: userID,
+                channel_verified_date: new Date().toString()
+            }, { new: true }).populate('channel_verified_user');
+            return verifiedChannel;
+        }
+        catch (e) {
+            throw new common_1.HttpException(e.message, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
+    async getRelatedChannels(channelId) {
+        try {
+            const channel = await this.findChannelById(channelId);
+            const relatedChannel = await this.ChannelModel.find({ _id: { $ne: channel._id }, channel_ref: channel.channel_ref }, null, { sort: { "_id": -1 } });
+            const parentChannel = await this.findChannelById(String(channel.channel_ref));
+            return relatedChannel.concat([parentChannel]);
         }
         catch (e) {
             throw new common_1.HttpException(e.message, common_1.HttpStatus.BAD_REQUEST);
@@ -225,6 +250,10 @@ let ChannelService = class ChannelService {
     }
     async createHardware(createHardwareDto) {
         try {
+            const findedHardware = await this.HardwareModel.findOne({ title: createHardwareDto.title });
+            if (findedHardware) {
+                throw new mongoose_1.Error(`Hostname ${createHardwareDto.title} - Занят! Пожалуйста выберите другой.`);
+            }
             const newHardware = new this.HardwareModel({
                 ...createHardwareDto
             });

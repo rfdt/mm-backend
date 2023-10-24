@@ -252,6 +252,10 @@ export class ChannelService {
 
   async createHardware(createHardwareDto: CreateHardwareDTO) {
     try {
+      const findedHardware = await this.HardwareModel.findOne({title: createHardwareDto.title})
+      if(findedHardware){
+        throw new Error(`Hostname ${createHardwareDto.title} - Занят! Пожалуйста выберите другой.`)
+      }
       const newHardware = new this.HardwareModel({
         ...createHardwareDto
       });

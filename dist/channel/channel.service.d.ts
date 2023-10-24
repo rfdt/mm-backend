@@ -71,6 +71,12 @@ export declare class ChannelService {
     createChannel(newChannel: newChannelDto): Promise<import("mongoose").Document<unknown, {}, ChannelDocument> & Channel & import("mongoose").Document<any, any, any> & {
         _id: import("mongoose").Types.ObjectId;
     }>;
+    verifyChannel(verifiedChannelDto: UpdatedChannelWithCreateDto, userID: string): Promise<import("mongoose").Document<unknown, {}, ChannelDocument> & Channel & import("mongoose").Document<any, any, any> & {
+        _id: import("mongoose").Types.ObjectId;
+    }>;
+    getRelatedChannels(channelId: any): Promise<(import("mongoose").Document<unknown, {}, ChannelDocument> & Channel & import("mongoose").Document<any, any, any> & {
+        _id: import("mongoose").Types.ObjectId;
+    })[]>;
     getHardwareValues(): Promise<[(import("mongoose").Document<unknown, {}, HardwareDocument> & Hardware & import("mongoose").Document<any, any, any> & {
         _id: import("mongoose").Types.ObjectId;
     })[], (import("mongoose").Document<unknown, {}, HardwareDocument> & Hardware & import("mongoose").Document<any, any, any> & {

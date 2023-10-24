@@ -1,4 +1,5 @@
 import mongoose, { Document } from 'mongoose';
+import { User } from "../user/user.schema";
 export type ChannelDocument = Channel & Document;
 export declare class Channel {
     id_tbcd: string;
@@ -27,6 +28,8 @@ export declare class Channel {
     channel_region: string;
     channel_ref: Channel;
     channel_verified: boolean;
+    channel_verified_user: User;
+    channel_verified_date: Date;
     inventory_channel_pe: string;
     inventory_channel_pe_port: string;
     inventory_channel_vid: string;
