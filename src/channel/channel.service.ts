@@ -160,10 +160,10 @@ export class ChannelService {
     try {
       const changedStatusField = await this.ChannelModel.findByIdAndUpdate(updatedChannelWithCreateDto._id,
         { status: "ИЗМ" }, { new: true });
+      delete updatedChannelWithCreateDto._id
       const newChannel = new this.ChannelModel({
         ...updatedChannelWithCreateDto,
         channel_ref: changedStatusField.channel_ref ? changedStatusField.channel_ref : updatedChannelWithCreateDto._id,
-        _id: null
       });
       const newUpdatedChannel = await newChannel.save();
       return newUpdatedChannel;
