@@ -1,0 +1,17 @@
+version: "1"
+services:
+  mm-mongo:
+    container_name: mm-mongo
+    image: mongo
+    volumes:
+      - type: bind
+        source: C:/data
+        target: /data/db
+    ports:
+        - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongodbrootuser
+      MONGO_INITDB_ROOT_PASSWORD: somefuckingpassword
+    restart: "always"
+
+#docker compose -f ./mongo-docker-compose.yml up --build --detach

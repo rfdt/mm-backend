@@ -8,7 +8,7 @@ import { AuthModule } from "./auth/auth.module";
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://127.0.0.1/ttm-variant-second'),
+    MongooseModule.forRoot('mongodb://mongodbrootuser:somefuckingpassword@192.168.201.123:27017/', {dbName: 'ttm-variant-second'}),
     ChannelModule,
     UserModule,
     AuthModule
