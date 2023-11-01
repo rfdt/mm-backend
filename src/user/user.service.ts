@@ -28,6 +28,15 @@ export class UserService {
     }
   }
 
+  async getUserByName(name: string) {
+    try {
+      const user = await this.UserModel.findOne({name})
+      return user;
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
   async getUserById(id: string){
     try {
       const user = await this.UserModel.findById(id);
