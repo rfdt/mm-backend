@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query, UseGuards } from "@nestjs/common";
+import {Body, Controller, Get, Param, Post, Query, UploadedFiles, UseGuards, UseInterceptors} from "@nestjs/common";
 import { ChannelService } from "./channel.service";
 import { findChannelsDTO } from "./dto/findChannels.dto";
 import { AuthGuard } from "../auth/auth.guard";
@@ -6,6 +6,7 @@ import {UpdatedChannelWithCreateDto} from "./dto/updatedChannelWithCreate.dto";
 import {newChannelDto} from "./dto/newChannel.dto";
 import {CreateHardwareDTO} from "./dto/createHardware";
 import {UserID} from "../auth/userId.decorator";
+import {FileFieldsInterceptor} from "@nestjs/platform-express";
 @Controller('channels')
 export class ChannelController {
 
@@ -62,6 +63,14 @@ export class ChannelController {
   @Post('/create')
   async createChannel(@Body() newChannelDto: newChannelDto){
     return await this.ChannelService.createChannel(newChannelDto);
+  }
+
+  @UseInterceptors(FileFieldsInterceptor([
+    {name: "file", maxCount: 1}
+  ]))
+  @Post('/createfromfile')
+  async createFromFile(@UploadedFiles() files){
+    return await this.ChannelService.createFromFile(files.file[0]);
   }
 
   @UseGuards(AuthGuard)

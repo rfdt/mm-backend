@@ -15,3 +15,4 @@ services:
     restart: "always"
 
 #docker compose -f ./mongo-docker-compose.yml up --build --detach
+#MongooseModule.forRoot('mongodb://mongodbrootuser:somefuckingpassword@192.168.201.123:27017/', {dbName: 'ttm-variant-second'}),
