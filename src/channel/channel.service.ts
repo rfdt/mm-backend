@@ -197,6 +197,10 @@ export class ChannelService {
 
     async createFromFile(file) {
         try {
+            if(file.mimetype !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
+                throw new Error('Загруженный файл не является .xlsx');
+            }
+
             const xlsxReaded = xlsx.read(file.buffer);
             const worksheet = xlsxReaded.Sheets[xlsxReaded.SheetNames[0]];
             const jsonFromXlsxArray = xlsx.utils.sheet_to_json(worksheet);
@@ -213,7 +217,7 @@ export class ChannelService {
                 })
 
                 if (channel && channel._id){
-                    channelMSG.push(`Канал на строке ${i + 2} уже существует`)
+                    // channelMSG.push(`Канал на строке ${i + 2} уже существует`)
                     continue loop1;
                 }
 
