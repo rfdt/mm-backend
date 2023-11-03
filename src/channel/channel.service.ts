@@ -256,7 +256,7 @@ export class ChannelService {
                 if (findedPE) {
                     newChannel['channel_pe'] = findedPE.title
                 } else {
-                    channelMSG.push(`В канале на строке ${i + 2} определён несуществующий PE`)
+                    channelMSG.push(`В канале на строке ${i + 2} указан несуществующий PE`)
                     continue loop1;
                 }
 
@@ -265,7 +265,7 @@ export class ChannelService {
                     if (key.includes('channel_agg') && key !== 'channel_agg-port') {
                         const findedHard = hardware.find(hard => hard.title === item[key])
                         if (!findedHard) {
-                            channelMSG.push(`На строке ${i + 2} определена несуществующая агрегация ${item[key]} в канале`);
+                            channelMSG.push(`На строке ${i + 2} указана несуществующая агрегация ${item[key]} в канале`);
                             continue loop1;
                         }
                         channel_agg_stop.push({
@@ -348,6 +348,57 @@ export class ChannelService {
             await this.HardwareModel.find({hardware_type: "ssw"}),
             await this.HardwareModel.find({hardware_type: "stop"})
         ]);
+    }
+
+    async channelsDashboardStat(){
+        try {
+            let services = {};
+            let cities = {};
+            let reserved = 0;
+            let clients = [];
+            const allChannelsWithoutEditMark = await this.ChannelModel
+                .find({status:  {$in: ["ВКЛ", "ПАУЗА", "РЕЗЕРВ"]}});
+
+            allChannelsWithoutEditMark.forEach(channel=>{
+                if(services[channel.service]){
+                    services[channel.service]++;
+                }else {
+                    services[channel.service] = 1;
+                }
+
+                if(cities[channel.city]){
+                    cities[channel.city] ++;
+                }else{
+                    cities[channel.city] = 1;
+                }
+
+                if(channel.status === "РЕЗЕРВ") {
+                    reserved++
+                }
+
+                if(!clients.includes(channel.client)){
+                    clients.push(channel.client)
+                }
+
+            })
+
+            return {
+                channelsCount: allChannelsWithoutEditMark.length,
+                services: Object.fromEntries(
+                    // @ts-ignore
+                    Object.entries(services).sort(([,a],[,b]) => b-a).slice(0,5)
+                ),
+                cities: Object.fromEntries(
+                    // @ts-ignore
+                    Object.entries(cities).sort(([,a],[,b]) => b-a).slice(0,6)
+                ),
+                reservedChannels: reserved,
+                clientsCount: clients.length
+            }
+
+        }catch (e){
+            throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
+        }
     }
 
     async backupWithFtp() {
