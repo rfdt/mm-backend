@@ -1,5 +1,5 @@
-import {HttpCode, HttpException, HttpStatus, Injectable} from "@nestjs/common";
-import {Error, Model, Schema} from "mongoose";
+import { HttpException, HttpStatus, Injectable} from "@nestjs/common";
+import {Error, Model} from "mongoose";
 import {InjectModel} from "@nestjs/mongoose";
 import {Readable} from "stream";
 import {Channel, ChannelDocument} from "./channel.schema";
@@ -9,11 +9,8 @@ import {newChannelDto} from "./dto/newChannel.dto";
 import {Hardware, HardwareDocument} from "./hardware.schema";
 import * as xlsx from "xlsx";
 import * as ftp from "basic-ftp";
-// import * as backup from "../tw.json";
 import {transformToBase} from "./utils/transformToBase";
 import {CreateHardwareDTO} from "./dto/createHardware";
-import * as Buffer from "buffer";
-import * as fs from "fs";
 
 
 @Injectable()
@@ -499,89 +496,4 @@ export class ChannelService {
             throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
         }
     }
-
-    // channels = backup;
-    // async insertTestValues(){
-    //   try {
-    //     backup.forEach(async (channel, idx)=>{
-    //       delete channel._id
-    //       const parsedDate = new Date(channel.date.split('.').reverse().join('.')).toString()
-    //       if(idx === 0) {
-    //         console.log(parsedDate)
-    //       }
-    //       try {
-    //         await this.ChannelModel.create({
-    //           ...channel,
-    //           channel_verified: false,
-    //           channel_agg_stop: null,
-    //           channel_acc_stop: null,
-    //           channel_pe: null,
-    //           channel_pe_port: null,
-    //           channel_vid: null,
-    //           date: parsedDate,
-    //
-    //           inventory_channel_pe: channel.channel_pe,
-    //           inventory_channel_pe_port: channel.channel_pe_port,
-    //           inventory_channel_vid: channel.channel_vid,
-    //           inventory_channel_agg_stop: channel.channel_agg_stop,
-    //           inventory_channel_agg_port: channel.channel_agg_port,
-    //           inventory_channel_acc_stop: channel.channel_acc_stop,
-    //           inventory_channel_ip_mng_acc: channel.channel_ip_mng_acc,
-    //           inventory_channel_acc_port: channel.channel_acc_port,
-    //           inventory_channel_acc_model: channel.channel_acc_model,
-    //           inventory_channel_acc_sn: channel.channel_acc_sn,
-    //           inventory_channel_acc_mac: channel.channel_acc_mac
-    //         })
-    //       } catch (e){
-    //         console.log(e.message, "    ", idx);
-    //       }
-    //     })
-    //     return 'Imported. Try to check'
-    //   }catch (e){
-    //     throw new HttpException({e: e.message}, HttpStatus.BAD_REQUEST)
-    //   }
-    // }
-
-    // async insertTestHarwaresValues(){
-    //   const channels = await this.findAllChannels();
-    //   const pe = [];
-    //   const peStop = [];
-    //   const agg = [];
-    //   const aggStop = [];
-    //
-    //   channels.forEach(async (channel)=>{
-    //     if (pe.indexOf(channel.inventory_channel_pe) === -1 ) {
-    //       pe.push(channel.inventory_channel_pe)
-    //       await this.HardwareModel.create({
-    //         title: channel.inventory_channel_pe ? channel.inventory_channel_pe : "SOME_BAD_IMPORTED_AR",
-    //         uplink: 'xe-1/0/1',
-    //         uplink_type: 'to_core',
-    //         hardware_type: 'pe'
-    //       })
-    //     }
-    //
-    //     if(agg.indexOf(channel.inventory_channel_agg_stop) === -1 && aggStop.indexOf(channel.inventory_channel_agg_stop) === -1){
-    //       if(channel.inventory_channel_agg_stop && channel.inventory_channel_agg_stop.split('-')[0].length === 4 && channel.inventory_channel_agg_stop.split('-')[1] && channel.inventory_channel_agg_stop.toLowerCase() !== 'apex-krym'){
-    //         agg.push(channel.inventory_channel_agg_stop)
-    //         await this.HardwareModel.create({
-    //           title: channel.inventory_channel_agg_stop ? channel.inventory_channel_agg_stop : "SOME_BAD_IMPORTED_SSW",
-    //           uplink: 'ge-1/0/1',
-    //           uplink_type: 'to_ar',
-    //           hardware_type: 'ssw'
-    //         })
-    //       }else {
-    //         aggStop.push(channel.inventory_channel_agg_stop)
-    //         await this.HardwareModel.create({
-    //           title: channel.inventory_channel_agg_stop ? channel.inventory_channel_agg_stop : "SOME_BODE_IMPORTED_STOP",
-    //           uplink: 'ge-1/0/2',
-    //           uplink_type: 'to_ar',
-    //           hardware_type: 'stop'
-    //         })
-    //       }
-    //     }
-    //   })
-    //
-    //   return('Try to check')
-    // }
-
 }

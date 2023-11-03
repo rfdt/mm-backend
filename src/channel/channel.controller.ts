@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Param, Post, Query, UploadedFiles, UseGuards, UseInterceptors} from "@nestjs/common";
+import {Body, Controller, Get, Param, Post, UploadedFiles, UseGuards, UseInterceptors} from "@nestjs/common";
 import { ChannelService } from "./channel.service";
 import { findChannelsDTO } from "./dto/findChannels.dto";
 import { AuthGuard } from "../auth/auth.guard";
