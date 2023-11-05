@@ -104,14 +104,4 @@ export class ChannelController {
     return await this.ChannelService.backupWithFtp();
   }
 
-  // @Get('/insert')
-  //  async insertTestValues(){
-  //   return  await this.ChannelService.insertTestValues();
-  // }
-
-  // @Get('/inserthardware')
-  // async insertHardware(){
-  //   return await this.ChannelService.insertTestHarwaresValues();
-  // }
-
 }
