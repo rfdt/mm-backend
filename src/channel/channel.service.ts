@@ -11,6 +11,7 @@ import * as xlsx from "xlsx";
 import * as ftp from "basic-ftp";
 import {transformToBase} from "./utils/transformToBase";
 import {CreateHardwareDTO} from "./dto/createHardware";
+import * as process from "process";
 
 
 @Injectable()
@@ -408,9 +409,9 @@ export class ChannelService {
             const excel_stream = Readable.from(excelBuffer);
             const client = new ftp.Client();
             await client.access({
-                host: "127.0.0.1",
-                user: "ruslan",
-                password: "vfvjxrf2525",
+                host: process.env.FTP_HOST,
+                user: process.env.FTP_USER,
+                password: process.env.FTP_PASSWORD,
                 secure: true,
                 secureOptions: {rejectUnauthorized: false}
             });

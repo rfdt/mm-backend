@@ -5,10 +5,11 @@ import {ChannelModule} from './channel/channel.module';
 import {MongooseModule} from "@nestjs/mongoose";
 import {UserModule} from "./user/user.module";
 import {AuthModule} from "./auth/auth.module";
+import * as process from "process";
 
 @Module({
     imports: [
-        MongooseModule.forRoot('mongodb://mongodbrootuser:somefuckingpassword@192.168.0.120:27017/', {dbName: 'ttm-variant-second'}),
+        MongooseModule.forRoot(process.env.MONGO_URI, {dbName: process.env.MONGO_DB}),
         ChannelModule,
         UserModule,
         AuthModule
