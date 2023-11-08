@@ -38,6 +38,7 @@ export class ChannelController {
     return await this.ChannelService.findChannelById(params.id);
   }
 
+  @UseGuards(AuthGuard)
   @Get('/getfiltersvalue')
   async gitFiltersValue(){
     return await this.ChannelService.gitFiltersValue();
@@ -46,11 +47,6 @@ export class ChannelController {
   @Get('/count')
   async getChannelsCount() {
     return await this.ChannelService.getChannelsCount();
-  }
-
-  @Get('/test')
-  async testError(){
-    return await this.ChannelService.testError();
   }
 
   @Roles("TCUSS", "GFSS")
