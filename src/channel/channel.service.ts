@@ -11,13 +11,15 @@ import * as xlsx from "xlsx";
 import * as ftp from "basic-ftp";
 import {transformToBase} from "./utils/transformToBase";
 import {CreateHardwareDTO} from "./dto/createHardware";
+import {FilesService} from "../files/files.service";
 
 
 @Injectable()
 export class ChannelService {
 
     constructor(@InjectModel(Channel.name) private ChannelModel: Model<ChannelDocument>,
-                @InjectModel(Hardware.name) private HardwareModel: Model<HardwareDocument>) {
+                @InjectModel(Hardware.name) private HardwareModel: Model<HardwareDocument>,
+                private readonly FileService:FilesService) {
     }
 
     async findAllChannels() {
@@ -405,6 +407,7 @@ export class ChannelService {
             const worksheet = xlsx.utils.json_to_sheet(transformed);
             const workbook = {Sheets: {data: worksheet}, SheetNames: ["data"]};
             const excelBuffer = xlsx.write(workbook, {type: "buffer"});
+            // await this.FileService.uploadFiles([{originalname: 'backup.xlsx', buffer: excelBuffer}], "Backup");
             const excel_stream = Readable.from(excelBuffer);
             const client = new ftp.Client();
             await client.access({
