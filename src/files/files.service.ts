@@ -7,7 +7,7 @@ export class FilesService {
     constructor(private readonly minioService: MinioService) {
     }
 
-    async uploadFiles(files, prefix) {
+    async uploadFiles(files, prefix: string) {
         try {
             let urls = [];
             for (let file of files) {
